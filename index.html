@@ -18,6 +18,7 @@
   --amber:#d4940a;--amber-bg:rgba(212,148,10,0.08);--amber-border:rgba(212,148,10,0.25);
   --coral:#d85a30;--coral-bg:rgba(216,90,48,0.08);--coral-border:rgba(216,90,48,0.25);
   --purple:#8b7fd4;--purple-bg:rgba(139,127,212,0.08);--purple-border:rgba(139,127,212,0.25);
+  --teal:#2aa198;--teal-bg:rgba(42,161,152,0.08);--teal-border:rgba(42,161,152,0.25);
   --red:#d44;--red-bg:rgba(221,68,68,0.08);
   --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);--border3:rgba(255,255,255,0.15);
   --radius:10px;--radius-lg:14px;
@@ -49,7 +50,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .app{max-width:780px;margin:0 auto;padding:16px;min-height:100vh}
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:12px 0;border-bottom:1px solid var(--border)}
 .app-title{font-size:18px;font-weight:600;letter-spacing:-.3px}.app-title span{color:var(--accent)}
-.app-header-right{display:flex;align-items:center;gap:8px}
+.app-header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .user-badge{font-size:11px;color:var(--text3);background:var(--bg3);padding:4px 10px;border-radius:6px}
 .role-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500}
 .role-admin{background:var(--accent-bg);color:var(--accent)}.role-create{background:var(--green-bg);color:var(--green)}.role-read{background:var(--amber-bg);color:var(--amber)}
@@ -72,6 +73,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .machine-pill.mtc{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
 .machine-pill.tmy{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
 .machine-pill.lathe{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.machine-pill.mill{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)}
 .new-card{border:1px dashed var(--border3);text-align:center;color:var(--accent);font-weight:500;padding:20px;cursor:pointer;border-radius:var(--radius);background:transparent;transition:all .15s}
 .new-card:hover{background:var(--accent-bg);border-color:var(--accent-border)}
 .form-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -161,11 +163,18 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .sync-ok{background:var(--green-bg);color:var(--green)}
 .sync-err{background:var(--red-bg);color:var(--red)}
 .sync-local{background:var(--amber-bg);color:var(--amber)}
+.op-chips{display:flex;flex-wrap:wrap;gap:6px}
+.op-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);transition:all .15s;user-select:none}
+.op-chip:hover{border-color:var(--border3);color:var(--text2)}
+.op-chip.active{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal)}
+.op-chip.disabled{cursor:default;opacity:.6}
+.pallet-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:600px){
   .field-grid.cols-3,.field-grid.cols-4{grid-template-columns:1fr 1fr}
   .search-row select{width:100%}
   .tab-btn{padding:8px 10px;font-size:12px}
   .part-card-thumb{width:40px;height:40px}
+  .pallet-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -178,9 +187,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 <script type="text/babel">
 const {useState,useEffect,useRef,useCallback,useMemo}=React;
 
-// ═══════════════════════════════════════════════════════════════════════
-// SAFE STRING HELPER - prevents toUpperCase on null/undefined
-// ═══════════════════════════════════════════════════════════════════════
+// Safe string helper
 const S=(v)=>v==null?'':String(v);
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -191,15 +198,11 @@ const CONFIG={
   tenantId:'999ce3f5-e368-4404-8522-d6a555b1bb52',
   siteId:'wyattprecisionmachine.sharepoint.com:/sites/JobCards:',
   redirectUri:window.location.origin+window.location.pathname,
-  scopes:['Sites.ReadWrite.All','Files.ReadWrite.All','User.Read'],
 };
 const ROLES={ADMIN:'admin',MODIFY:'modify',CREATE:'create',READ:'read'};
 const ROLE_LABELS={admin:'Admin',modify:'Modify',create:'Create',read:'Read Only'};
 const ROLE_CLASSES={admin:'role-admin',modify:'role-admin',create:'role-create',read:'role-read'};
 
-// ═══════════════════════════════════════════════════════════════════════
-// SEED DATA
-// ═══════════════════════════════════════════════════════════════════════
 const SEED_AC={
   radius:['.007','.010','.015','.031'],
   insert:['TDAB','TDHB','VNMG 2.5-2NF','CUSTOM'],
@@ -208,6 +211,8 @@ const SEED_AC={
   colletType:['16C','5C'],
 };
 
+const MILL_OP_TYPES=['HEX','THREAD','BREAK','WEH','LWH','SLOT','FLATS','FACE'];
+
 // ═══════════════════════════════════════════════════════════════════════
 // MACHINE TEMPLATES
 // ═══════════════════════════════════════════════════════════════════════
@@ -215,6 +220,7 @@ const MACHINE_TEMPLATES={
   mtc:{label:'MTC',color:'mtc',machines:['MTC 1','MTC 2']},
   tmy:{label:'TMY',color:'tmy',machines:['TMY 1']},
   lathe:{label:'Lathe',color:'lathe',machines:['CNC 1','CNC 2','CNC 3','CNC 4','CNC 5','GNT 1','GNT 2','PLT 1','PLT 2','PLT 3','PLT 4','PLT 5','PLT 6']},
+  mill:{label:'Mill',color:'mill',machines:['KTM 1','KTM 2','KTM 3','KTM 4','BTR 1','GEN 1']},
 };
 function getAllMachines(){
   const list=[];
@@ -244,7 +250,7 @@ async function getToken(){
 }
 async function graphFetch(url,opts={}){
   const token=await getToken();
-  if(!token){console.warn('No token available for Graph call:',url);return null}
+  if(!token){console.warn('No token for:',url);return null}
   console.log('Graph call:',url);
   const r=await fetch(`https://graph.microsoft.com/v1.0${url}`,{...opts,headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json',...opts.headers}});
   if(!r.ok){const txt=await r.text();console.error('Graph error:',r.status,url,txt);return null}
@@ -252,7 +258,7 @@ async function graphFetch(url,opts={}){
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// DATA LAYER
+// DATA LAYER — SharePoint saves jsonData as PLAIN TEXT
 // ═══════════════════════════════════════════════════════════════════════
 let _listId=null,_driveId=null,_useGraph=false;
 
@@ -260,83 +266,67 @@ async function ensureListId(){
   if(_listId)return _listId;
   const r=await graphFetch(`/sites/${CONFIG.siteId}/lists?$filter=displayName eq 'SetupSheets'`);
   if(r?.value?.length>0){_listId=r.value[0].id;return _listId}
-  console.error('SetupSheets list not found. Please create it manually in SharePoint.');
-  return null;
+  console.error('SetupSheets list not found.');return null;
 }
 async function ensureDriveId(){if(_driveId)return _driveId;const r=await graphFetch(`/sites/${CONFIG.siteId}/drive`);if(r?.id){_driveId=r.id;return _driveId}return null}
 
+function stripHtml(str){
+  if(!str||typeof str!=='string')return str;
+  if(!str.includes('<'))return str;
+  try{const d=new DOMParser().parseFromString(str,'text/html');return d.body.textContent||''}catch{return str}
+}
+
 async function loadSheetsFromGraph(){
-  const lid=await ensureListId();
-  if(!lid)return null;
+  const lid=await ensureListId();if(!lid)return null;
   const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items?$expand=fields&$top=500`);
   if(!r?.value)return null;
   return r.value.map(i=>{
     try{
-      const parsed=JSON.parse(i.fields.jsonData||'{}');
-      // Ensure all critical string fields are never undefined
-      return{
-        ...parsed,
-        partNumber:S(parsed.partNumber),
-        rev:S(parsed.rev),
-        machine:S(parsed.machine),
-        type:parsed.type||getMachineType(S(parsed.machine)),
-        notes:S(parsed.notes),
-        _itemId:i.id
-      };
-    }catch(e){console.warn('Bad jsonData in item',i.id,e);return null}
+      let raw=S(i.fields.jsonData);
+      raw=stripHtml(raw);
+      if(!raw||!raw.trim().startsWith('{'))return null;
+      const parsed=JSON.parse(raw);
+      return{...parsed,partNumber:S(parsed.partNumber),rev:S(parsed.rev),machine:S(parsed.machine),type:parsed.type||getMachineType(S(parsed.machine)),notes:S(parsed.notes),_itemId:i.id};
+    }catch(e){console.warn('Bad jsonData in item',i.id,e.message);return null}
   }).filter(Boolean);
 }
 
 async function saveSheetToGraph(sheet){
-  const lid=await ensureListId();
-  if(!lid){console.error('Cannot save: no list ID');return false}
-  const fields={Title:S(sheet.partNumber)||sheet.id,jsonData:JSON.stringify(sheet)};
+  const lid=await ensureListId();if(!lid)return false;
+  const jsonStr=JSON.stringify(sheet);
+  const fields={Title:S(sheet.partNumber)||sheet.id,jsonData:jsonStr};
   try{
     if(sheet._itemId){
       const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}/fields`,{method:'PATCH',body:JSON.stringify(fields)});
-      if(!r){console.error('Save PATCH failed');return false}
+      if(!r){console.error('PATCH failed');return false}
     }else{
       const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items`,{method:'POST',body:JSON.stringify({fields})});
-      if(r){sheet._itemId=r.id;console.log('Created new item:',r.id)}else{console.error('Save POST failed');return false}
+      if(r){sheet._itemId=r.id;console.log('Created item:',r.id)}else{console.error('POST failed');return false}
     }
-    console.log('Save successful:',S(sheet.partNumber));
-    return true;
-  }catch(e){console.error('Save exception:',e);return false}
+    console.log('Saved:',S(sheet.partNumber));return true;
+  }catch(e){console.error('Save error:',e);return false}
 }
-
 async function deleteSheetFromGraph(sheet){const lid=await ensureListId();if(!lid||!sheet._itemId)return false;await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}`,{method:'DELETE'});return true}
 
 async function uploadFileToGraph(partNumber,file){const did=await ensureDriveId();if(!did)return null;const token=await getToken();if(!token)return null;const folder=`JobCardManager/Files/${partNumber}`;const r=await fetch(`https://graph.microsoft.com/v1.0/drives/${did}/root:/${folder}/${file.name}:/content`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':file.type||'application/octet-stream'},body:file});if(!r.ok)return null;return r.json()}
 async function listFilesFromGraph(partNumber){const did=await ensureDriveId();if(!did)return[];const folder=`JobCardManager/Files/${partNumber}`;const r=await graphFetch(`/drives/${did}/root:/${folder}:/children`);if(!r?.value)return[];return r.value.map(f=>({name:f.name,size:f.size,url:f['@microsoft.graph.downloadUrl']||f.webUrl,id:f.id}))}
 async function deleteFileFromGraph(fileId){const did=await ensureDriveId();if(!did)return;await graphFetch(`/drives/${did}/items/${fileId}`,{method:'DELETE'})}
 
-// Local storage fallback
 function loadLocal(){try{return JSON.parse(localStorage.getItem('jcm_data')||'[]')}catch{return[]}}
 function saveLocal(data){localStorage.setItem('jcm_data',JSON.stringify(data))}
 
 // ═══════════════════════════════════════════════════════════════════════
-// AUTOCOMPLETE STORE
+// AUTOCOMPLETE
 // ═══════════════════════════════════════════════════════════════════════
-function initAC(){
-  const ac=loadAC();let changed=false;
-  Object.entries(SEED_AC).forEach(([field,vals])=>{
-    if(!ac[field])ac[field]=[];
-    vals.forEach(v=>{if(!ac[field].includes(v)){ac[field].push(v);changed=true}});
-    if(changed)ac[field].sort();
-  });
-  if(changed)saveAC(ac);
-}
+function initAC(){const ac=loadAC();let ch=false;Object.entries(SEED_AC).forEach(([f,vs])=>{if(!ac[f])ac[f]=[];vs.forEach(v=>{if(!ac[f].includes(v)){ac[f].push(v);ch=true}});if(ch)ac[f].sort()});if(ch)saveAC(ac)}
 function loadAC(){try{return JSON.parse(localStorage.getItem('jcm_ac')||'{}')}catch{return{}}}
 function saveAC(ac){localStorage.setItem('jcm_ac',JSON.stringify(ac))}
 function addAC(field,value){const sv=S(value).trim().toUpperCase();if(!sv)return;const ac=loadAC();if(!ac[field])ac[field]=[];if(!ac[field].includes(sv)){ac[field].push(sv);ac[field].sort();saveAC(ac)}}
 function getColletTypes(){const ac=loadAC();return ac.colletType||SEED_AC.colletType||[]}
 function addColletType(v){addAC('colletType',v)}
 
-// Audit
 function loadAudit(id){try{return JSON.parse(localStorage.getItem('jcm_audit_'+id)||'[]')}catch{return[]}}
 function addAudit(id,action,who){const l=loadAudit(id);l.unshift({who:who||'User',when:new Date().toISOString(),action});localStorage.setItem('jcm_audit_'+id,JSON.stringify(l.slice(0,200)))}
-
-// Roles
 function loadRoles(){try{return JSON.parse(localStorage.getItem('jcm_roles')||'{}')}catch{return{}}}
 function saveRoles(r){localStorage.setItem('jcm_roles',JSON.stringify(r))}
 function getUserRole(email){const r=loadRoles();return r[email]||r['*']||ROLES.ADMIN}
@@ -344,124 +334,114 @@ function canCreate(role){return[ROLES.ADMIN,ROLES.MODIFY,ROLES.CREATE].includes(
 function canModify(role){return[ROLES.ADMIN,ROLES.MODIFY].includes(role)}
 function isAdmin(role){return role===ROLES.ADMIN}
 
-// ═══════════════════════════════════════════════════════════════════════
-// RELATIVE TIME
-// ═══════════════════════════════════════════════════════════════════════
-function relTime(dateStr){
-  if(!dateStr)return'--';
-  const diff=Date.now()-new Date(dateStr).getTime();
-  const mins=Math.floor(diff/60000);if(mins<1)return'Just now';if(mins<60)return`${mins}m ago`;
-  const hrs=Math.floor(mins/60);if(hrs<24)return`${hrs}h ago`;
-  const days=Math.floor(hrs/24);if(days<7)return`${days}d ago`;
-  return new Date(dateStr).toLocaleDateString();
-}
+function relTime(dateStr){if(!dateStr)return'--';const diff=Date.now()-new Date(dateStr).getTime();const mins=Math.floor(diff/60000);if(mins<1)return'Just now';if(mins<60)return`${mins}m ago`;const hrs=Math.floor(mins/60);if(hrs<24)return`${hrs}h ago`;const days=Math.floor(hrs/24);if(days<7)return`${days}d ago`;return new Date(dateStr).toLocaleDateString()}
 
 // ═══════════════════════════════════════════════════════════════════════
-// CAPS INPUT
+// UI COMPONENTS
 // ═══════════════════════════════════════════════════════════════════════
 function CapsInput({value,onChange,disabled,...props}){
   return <input className="caps" value={S(value)} onChange={e=>onChange(e.target.value.toUpperCase())} disabled={disabled} {...props}/>;
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// AUTOCOMPLETE INPUT
-// ═══════════════════════════════════════════════════════════════════════
 function AutoInput({field,value,onChange,placeholder,disabled}){
   const[open,setOpen]=useState(false);const[hl,setHl]=useState(-1);
-  const ac=loadAC();
-  const sv=S(value).toUpperCase();
+  const ac=loadAC();const sv=S(value).toUpperCase();
   const opts=(ac[field]||[]).filter(v=>v.includes(sv)&&v!==sv);
   const show=open&&opts.length>0&&sv.length>0;
-  return(
-    <div className="autocomplete-wrap">
-      <input className="caps" value={S(value)} onChange={e=>{onChange(e.target.value.toUpperCase());setOpen(true);setHl(-1)}}
-        onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),150)} disabled={disabled}
-        onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if(e.key==='Enter'&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}}
-        placeholder={placeholder}/>
-      {show&&<div className="autocomplete-list">{opts.slice(0,10).map((o,i)=>(
-        <div key={o} className={`autocomplete-item${i===hl?' highlighted':''}`} onMouseDown={()=>{onChange(o);setOpen(false)}}>{o}</div>
-      ))}</div>}
-    </div>
-  );
+  return(<div className="autocomplete-wrap">
+    <input className="caps" value={S(value)} onChange={e=>{onChange(e.target.value.toUpperCase());setOpen(true);setHl(-1)}}
+      onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),150)} disabled={disabled}
+      onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if(e.key==='Enter'&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}}
+      placeholder={placeholder}/>
+    {show&&<div className="autocomplete-list">{opts.slice(0,10).map((o,i)=>(<div key={o} className={`autocomplete-item${i===hl?' highlighted':''}`} onMouseDown={()=>{onChange(o);setOpen(false)}}>{o}</div>))}</div>}
+  </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// TOOLING TABLE
-// ═══════════════════════════════════════════════════════════════════════
 function ToolingTable({rows,onChange,lastColLabel,disabled}){
   const safeRows=(rows||[]).length>0?rows:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}];
   const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
   const add=()=>onChange([...safeRows,{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]);
   const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
-  return(<>
-    <table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Radius</th><th>Insert</th><th>Grade</th><th>Tool holder</th><th>{lastColLabel}</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}>
-      <td className="row-num">{i+1}</td>
+  return(<><table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Radius</th><th>Insert</th><th>Grade</th><th>Tool holder</th><th>{lastColLabel}</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
+    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
       <td><AutoInput field="radius" value={S(r.radius)} onChange={v=>upd(i,'radius',v)} disabled={disabled}/></td>
       <td><AutoInput field="insert" value={S(r.insert)} onChange={v=>upd(i,'insert',v)} disabled={disabled}/></td>
       <td><AutoInput field="grade" value={S(r.grade)} onChange={v=>upd(i,'grade',v)} disabled={disabled}/></td>
       <td><AutoInput field="toolHolder" value={S(r.toolHolder)} onChange={v=>upd(i,'toolHolder',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.lastCol)} onChange={v=>upd(i,'lastCol',v)} disabled={disabled}/></td>
-      {!disabled&&<td><button className="del-btn" onClick={()=>del(i)}>&times;</button></td>}
-    </tr>)}
-    </tbody></table>
-    {!disabled&&<button className="add-row-btn" onClick={add}>+ Add tool row</button>}
-  </>);
+      {!disabled&&<td><button className="del-btn" onClick={()=>del(i)}>&times;</button></td>}</tr>)}
+  </tbody></table>{!disabled&&<button className="add-row-btn" onClick={add}>+ Add tool row</button>}</>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// LOADER TABLE
-// ═══════════════════════════════════════════════════════════════════════
+function MillToolTable({rows,onChange,disabled}){
+  const safeRows=(rows||[]).length>0?rows:[{sub:'',tool:''}];
+  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
+  const add=()=>onChange([...safeRows,{sub:'',tool:''}]);
+  const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
+  return(<><table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Sub #</th><th>Tool</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
+    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
+      <td><CapsInput value={S(r.sub)} onChange={v=>upd(i,'sub',v)} disabled={disabled}/></td>
+      <td><CapsInput value={S(r.tool)} onChange={v=>upd(i,'tool',v)} disabled={disabled}/></td>
+      {!disabled&&<td><button className="del-btn" onClick={()=>del(i)}>&times;</button></td>}</tr>)}
+  </tbody></table>{!disabled&&<button className="add-row-btn" onClick={add}>+ Add tool row</button>}</>);
+}
+
+function PalletTable({rows,onChange,disabled,label}){
+  const safeRows=(rows||[]).length>0?rows:[{lista:'',drw:'',loc:''}];
+  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
+  const add=()=>onChange([...safeRows,{lista:'',drw:'',loc:''}]);
+  const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
+  return(<><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>{label}</div>
+    <table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Lista</th><th>Drawer</th><th>Location</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
+    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
+      <td><CapsInput value={S(r.lista)} onChange={v=>upd(i,'lista',v)} disabled={disabled}/></td>
+      <td><CapsInput value={S(r.drw)} onChange={v=>upd(i,'drw',v)} disabled={disabled}/></td>
+      <td><CapsInput value={S(r.loc)} onChange={v=>upd(i,'loc',v)} disabled={disabled}/></td>
+      {!disabled&&<td><button className="del-btn" onClick={()=>del(i)}>&times;</button></td>}</tr>)}
+  </tbody></table>{!disabled&&<button className="add-row-btn" onClick={add}>+ Add row</button>}</>);
+}
+
+function OpChips({selected,onChange,disabled}){
+  const sel=selected||[];
+  const toggle=(op)=>{if(disabled)return;if(sel.includes(op))onChange(sel.filter(o=>o!==op));else onChange([...sel,op])};
+  return(<div className="op-chips">{MILL_OP_TYPES.map(op=>(<div key={op} className={`op-chip${sel.includes(op)?' active':''}${disabled?' disabled':''}`} onClick={()=>toggle(op)}>{op}</div>))}</div>);
+}
+
 function LoaderTable({rows,onChange,disabled}){
   const grippers=['A','B','E','F'];
   const safeRows=(rows||[]).length>=4?rows:[{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''}];
   const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v)};onChange(n)};
   return(<table className="tool-table"><thead><tr><th style={{width:50}}>Gripper</th><th>Finger size</th><th>Stop number</th><th>Stop description</th></tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}>
-      <td className="row-num" style={{fontWeight:500}}>{grippers[i]||i+1}</td>
+    {safeRows.map((r,i)=><tr key={i}><td className="row-num" style={{fontWeight:500}}>{grippers[i]||i+1}</td>
       <td><AutoInput field="fingerSize" value={S(r.fingerSize)} onChange={v=>upd(i,'fingerSize',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.stopNumber)} onChange={v=>upd(i,'stopNumber',v)} disabled={disabled}/></td>
-      <td><CapsInput value={S(r.stopDesc)} onChange={v=>upd(i,'stopDesc',v)} disabled={disabled}/></td>
-    </tr>)}
+      <td><CapsInput value={S(r.stopDesc)} onChange={v=>upd(i,'stopDesc',v)} disabled={disabled}/></td></tr>)}
   </tbody></table>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// RUN HISTORY
-// ═══════════════════════════════════════════════════════════════════════
 function RunHistory({entries,onChange,disabled}){
-  const[open,setOpen]=useState(false);
-  const safeEntries=entries||[];
+  const[open,setOpen]=useState(false);const safeEntries=entries||[];
   const add=()=>onChange([...safeEntries,{date:'',po:'',mach:'',cycle:'',mods:''}]);
   const upd=(i,f,v)=>{const n=[...safeEntries];n[i]={...n[i],[f]:v};onChange(n)};
   const del=(i)=>onChange(safeEntries.filter((_,j)=>j!==i));
   return(<div style={{marginTop:8}}>
     <div className="collapsible-header" onClick={()=>setOpen(!open)}>
-      <span>Run history ({safeEntries.length})</span><span className={`chevron${open?' open':''}`}>&#9654;</span>
-    </div>
-    {open&&<>{safeEntries.map((e,i)=>(
-      <div key={i} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:8,padding:12,marginBottom:8}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-          <span style={{fontSize:12,color:'var(--text3)',fontWeight:500}}>Entry {i+1}</span>
-          {!disabled&&<button className="del-btn" style={{opacity:.6}} onClick={()=>del(i)}>&times;</button>}
-        </div>
-        <div className="field-grid cols-4">
-          <div className="field"><label>Date</label><input type="date" value={S(e.date)} onChange={ev=>upd(i,'date',ev.target.value)} disabled={disabled}/></div>
-          <div className="field"><label>PO #</label><CapsInput value={S(e.po)} onChange={v=>upd(i,'po',v)} disabled={disabled}/></div>
-          <div className="field"><label>Mach #</label><CapsInput value={S(e.mach)} onChange={v=>upd(i,'mach',v)} disabled={disabled}/></div>
-          <div className="field"><label>Cycle</label><CapsInput value={S(e.cycle)} onChange={v=>upd(i,'cycle',v)} disabled={disabled}/></div>
-        </div>
-        <div className="field" style={{marginTop:8}}><label>Program modifications</label>
-          <textarea rows={2} value={S(e.mods)} onChange={ev=>upd(i,'mods',ev.target.value)} placeholder="Include what and why" disabled={disabled}/>
-        </div>
-      </div>))}
-    {!disabled&&<button className="add-row-btn" onClick={add}>+ Add run history entry</button>}</>}
+      <span>Run history ({safeEntries.length})</span><span className={`chevron${open?' open':''}`}>&#9654;</span></div>
+    {open&&<>{safeEntries.map((e,i)=>(<div key={i} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:8,padding:12,marginBottom:8}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+        <span style={{fontSize:12,color:'var(--text3)',fontWeight:500}}>Entry {i+1}</span>
+        {!disabled&&<button className="del-btn" style={{opacity:.6}} onClick={()=>del(i)}>&times;</button>}</div>
+      <div className="field-grid cols-4">
+        <div className="field"><label>Date</label><input type="date" value={S(e.date)} onChange={ev=>upd(i,'date',ev.target.value)} disabled={disabled}/></div>
+        <div className="field"><label>PO #</label><CapsInput value={S(e.po)} onChange={v=>upd(i,'po',v)} disabled={disabled}/></div>
+        <div className="field"><label>Mach #</label><CapsInput value={S(e.mach)} onChange={v=>upd(i,'mach',v)} disabled={disabled}/></div>
+        <div className="field"><label>Cycle</label><CapsInput value={S(e.cycle)} onChange={v=>upd(i,'cycle',v)} disabled={disabled}/></div></div>
+      <div className="field" style={{marginTop:8}}><label>Program modifications</label>
+        <textarea rows={2} value={S(e.mods)} onChange={ev=>upd(i,'mods',ev.target.value)} placeholder="Include what and why" disabled={disabled}/></div>
+    </div>))}{!disabled&&<button className="add-row-btn" onClick={add}>+ Add run history entry</button>}</>}
   </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// IMAGE UPLOADS
-// ═══════════════════════════════════════════════════════════════════════
 function ImageUpload({image,onChange,disabled,label}){
   const ref=useRef();
   const handle=(e)=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=(ev)=>onChange(ev.target.result);r.readAsDataURL(f)};
@@ -472,15 +452,11 @@ function ImageUpload({image,onChange,disabled,label}){
   </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// FILE ATTACHMENTS
-// ═══════════════════════════════════════════════════════════════════════
 function getFileIcon(name){const ext=S(name).split('.').pop().toLowerCase();if(['pdf'].includes(ext))return{cls:'pdf',label:'PDF'};if(['jpg','jpeg','png','gif','bmp','tif','tiff'].includes(ext))return{cls:'img',label:'IMG'};if(['dwg','dxf','stp','step','igs','iges','stl'].includes(ext))return{cls:'cad',label:'CAD'};if(['nc','ngc','tap','gcode','txt','cnc'].includes(ext))return{cls:'prog',label:'PRG'};return{cls:'other',label:ext.toUpperCase().slice(0,3)||'FILE'}}
 function formatSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
 
 function FileAttachments({files,onFilesChange,disabled}){
-  const[dragover,setDragover]=useState(false);const inputRef=useRef();
-  const safeFiles=files||[];
+  const[dragover,setDragover]=useState(false);const inputRef=useRef();const safeFiles=files||[];
   const handleFiles=(fl)=>{const nf=[...safeFiles];Array.from(fl).forEach(f=>{const r=new FileReader();r.onload=(e)=>{nf.push({name:f.name,size:f.size,data:e.target.result,localFile:f});onFilesChange([...nf])};r.readAsDataURL(f)})};
   return(<div>
     {!disabled&&<div className={`file-drop${dragover?' dragover':''}`} onClick={()=>inputRef.current.click()}
@@ -489,8 +465,7 @@ function FileAttachments({files,onFilesChange,disabled}){
       <input ref={inputRef} type="file" multiple style={{display:'none'}} onChange={e=>handleFiles(e.target.files)}/>
       <div style={{fontSize:16,marginBottom:4}}>&#128206;</div>
       <div style={{fontSize:13}}>Drop files here or tap to upload</div>
-      <div style={{fontSize:11,marginTop:2}}>Programs, CAD drawings, PDFs, images</div>
-    </div>}
+      <div style={{fontSize:11,marginTop:2}}>Programs, CAD drawings, PDFs, images</div></div>}
     {safeFiles.map((f,i)=>{const icon=getFileIcon(f.name);return(<div className="file-item" key={i}>
       <div className={`file-icon ${icon.cls}`}>{icon.label}</div>
       <span className="file-name">{f.name}</span><span className="file-size">{f.size?formatSize(f.size):''}</span>
@@ -500,16 +475,12 @@ function FileAttachments({files,onFilesChange,disabled}){
   </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// COLLET TYPE+SIZE COMBO
-// ═══════════════════════════════════════════════════════════════════════
 function ColletField({typeValue,sizeValue,onTypeChange,onSizeChange,typeLabel,sizeLabel,disabled}){
   const types=getColletTypes();
   return(<div style={{display:'grid',gridTemplateColumns:'100px 1fr',gap:8}}>
     <div className="field"><label>{typeLabel||'Type'}</label>
       <select value={S(typeValue)} onChange={e=>onTypeChange(e.target.value)} disabled={disabled}>
-        <option value="">--</option>{types.map(t=><option key={t} value={t}>{t}</option>)}
-      </select></div>
+        <option value="">--</option>{types.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
     <div className="field"><label>{sizeLabel||'Size'}</label>
       <CapsInput value={sizeValue} onChange={onSizeChange} placeholder="e.g. 0.750" disabled={disabled}/></div>
   </div>);
@@ -523,13 +494,15 @@ function emptySheet(machine){
   const base={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),machine,type,partNumber:'',rev:'',notes:'',image:null,setupPhoto:null,runHistory:[],files:[],createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
   if(type==='mtc')return{...base,programNumber:'',pph:'',colletLocation:'',leftColletType:'',leftColletSize:'',leftSpindleSlot:'',rightColletType:'',rightColletSize:'',rightSpindleSlot:'',loader:[{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''}],leftCutting:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}],rightCutting:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]};
   if(type==='tmy')return{...base,collet1Type:'',collet1:'',collet2Type:'',collet2:'',turret1:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}],turret2:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}],turret3:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]};
+  if(type==='mill')return{...base,op:'',mainPartNumber:'',opTypes:[],pallet1Collets:[{lista:'',drw:'',loc:''}],pallet1Stops:[{lista:'',drw:'',loc:''}],pallet2Collets:[{lista:'',drw:'',loc:''}],pallet2Stops:[{lista:'',drw:'',loc:''}],pallet1Tools:[{sub:'',tool:''}],pallet2Tools:[{sub:'',tool:''}],comments:''};
   return{...base,cycleTime:'',machiningOp:'',colletStyleType:'',colletSize:'',colletType:'',colletLocation:'',stopType:'',stopLocation:'',tooling:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]};
 }
 
 function isSheetEmpty(s){
   return !s.partNumber&&!s.rev&&!s.notes&&!s.image&&!s.setupPhoto&&(s.files||[]).length===0&&(s.runHistory||[]).length===0
     &&!s.programNumber&&!s.pph&&!s.leftColletSize&&!s.rightColletSize&&!s.collet1&&!s.collet2
-    &&!s.cycleTime&&!s.machiningOp&&!s.colletSize&&!s.colletLocation;
+    &&!s.cycleTime&&!s.machiningOp&&!s.colletSize&&!s.colletLocation
+    &&!s.op&&!s.mainPartNumber&&!(s.opTypes||[]).length&&!s.comments;
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -546,8 +519,7 @@ function NotesHistoryView({partNumber,data,onBack}){
       {s.notes?<div className="nt-body">{s.notes}</div>:<div style={{color:'var(--text3)',fontSize:13,fontStyle:'italic'}}>No notes</div>}
       {(s.runHistory||[]).length>0&&<div className="nt-run">
         <div style={{fontWeight:500,marginBottom:4}}>Run history ({s.runHistory.length})</div>
-        {s.runHistory.map((r,i)=><div key={i} style={{marginBottom:4}}>{r.date&&<span>{r.date} </span>}{r.po&&<span>PO: {r.po} </span>}{r.cycle&&<span>Cycle: {r.cycle}</span>}{r.mods&&<div style={{color:'var(--text2)',marginTop:2}}>{r.mods}</div>}</div>)}
-      </div>}
+        {s.runHistory.map((r,i)=><div key={i} style={{marginBottom:4}}>{r.date&&<span>{r.date} </span>}{r.po&&<span>PO: {r.po} </span>}{r.cycle&&<span>Cycle: {r.cycle}</span>}{r.mods&&<div style={{color:'var(--text2)',marginTop:2}}>{r.mods}</div>}</div>)}</div>}
     </div>))}</div>
   </div>);
 }
@@ -567,19 +539,10 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
   const readOnly=!canModify(userRole)&&!(canCreate(userRole)&&!sheet._itemId);
   const set=(f,v)=>{setData(d=>{const nd={...d,[f]:v};setSaved(JSON.stringify(nd)===initialJson);return nd})};
   const hasChanged=!saved;
-
   const showToast=(msg,type='ok')=>{setToast({msg,type});setTimeout(()=>setToast(null),2500)};
 
-  const handleBack=()=>{
-    if(isSheetEmpty(data)){onDelete(data.id,true);return}
-    if(hasChanged&&!readOnly){if(!confirm('You have unsaved changes. Leave without saving?'))return}
-    onBack();
-  };
-
-  const checkDuplicate=()=>{
-    if(!data.partNumber)return null;
-    return allData.find(s=>s.id!==data.id&&S(s.partNumber).toUpperCase()===S(data.partNumber).toUpperCase()&&s.machine===data.machine&&S(s.rev).toUpperCase()===S(data.rev).toUpperCase());
-  };
+  const handleBack=()=>{if(isSheetEmpty(data)){onDelete(data.id,true);return}if(hasChanged&&!readOnly){if(!confirm('You have unsaved changes. Leave without saving?'))return}onBack()};
+  const checkDuplicate=()=>{if(!data.partNumber)return null;return allData.find(s=>s.id!==data.id&&S(s.partNumber).toUpperCase()===S(data.partNumber).toUpperCase()&&s.machine===data.machine&&S(s.rev).toUpperCase()===S(data.rev).toUpperCase())};
 
   const handleSave=async()=>{
     if(readOnly)return;
@@ -592,11 +555,8 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
     addAC('colletLocation',data.colletLocation);
     const updated={...data,updatedAt:new Date().toISOString(),_updatedBy:userName};
     addAudit(data.id,'Saved setup sheet',userName);
-    setSaving(true);
-    const ok=await onSave(updated);
-    setSaving(false);
-    setSaved(true);
-    showToast(ok===false?'Save failed - check connection':'Saved',ok===false?'err':'ok');
+    setSaving(true);const ok=await onSave(updated);setSaving(false);
+    setSaved(true);showToast(ok===false?'Save failed - check connection':'Saved',ok===false?'err':'ok');
   };
 
   const handleDuplicate=()=>{
@@ -613,6 +573,7 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
       th,td{border:1px solid #999;padding:4px 8px;text-align:left}th{background:#eee;font-weight:bold}
       .hg{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-bottom:16px}.hg div{padding:2px 0}.lb{font-weight:bold}
       .photos{display:flex;gap:16px;margin-bottom:16px}.photos img{max-width:300px;max-height:200px;border:1px solid #ccc;border-radius:4px}
+      .chips{margin:8px 0}.chip{display:inline-block;padding:2px 10px;border:1px solid #999;border-radius:12px;margin:2px;font-size:11px}
       @media print{button{display:none}}
     </style></head><body>`;
     h+=`<h2>${S(data.machine)} SET-UP SHEET</h2>`;
@@ -621,11 +582,15 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
     if(type==='mtc'){h+=`<div><span class="lb">Program:</span> ${S(data.programNumber)}</div><div><span class="lb">PPH:</span> ${S(data.pph)}</div><div><span class="lb">Collet Location:</span> ${S(data.colletLocation)}</div><div></div><div><span class="lb">Left Collet:</span> ${S(data.leftColletType)} ${S(data.leftColletSize)} / Slot ${S(data.leftSpindleSlot)}</div><div><span class="lb">Right Collet:</span> ${S(data.rightColletType)} ${S(data.rightColletSize)} / Slot ${S(data.rightSpindleSlot)}</div>`}
     if(type==='tmy'){h+=`<div><span class="lb">1st Collet:</span> ${S(data.collet1Type)} ${S(data.collet1)}</div><div><span class="lb">2nd Collet:</span> ${S(data.collet2Type)} ${S(data.collet2)}</div>`}
     if(type==='lathe'){h+=`<div><span class="lb">Cycle Time:</span> ${S(data.cycleTime)}</div><div><span class="lb">Machining OP:</span> ${S(data.machiningOp)}</div><div><span class="lb">Collet:</span> ${S(data.colletStyleType)} ${S(data.colletSize)} (${S(data.colletType)})</div><div><span class="lb">Collet Location:</span> ${S(data.colletLocation)}</div><div><span class="lb">Stop:</span> ${S(data.stopType)}</div><div><span class="lb">Stop Location:</span> ${S(data.stopLocation)}</div>`}
-    h+=`</div>`;
+    if(type==='mill'){h+=`<div><span class="lb">OP:</span> ${S(data.op)}</div><div><span class="lb">Main P#:</span> ${S(data.mainPartNumber)}</div>`;h+=`</div>`;if((data.opTypes||[]).length>0){h+=`<div class="chips"><span class="lb">Operations:</span> `;(data.opTypes||[]).forEach(o=>{h+=`<span class="chip">${o}</span> `});h+=`</div>`}else{h+=`</div>`}}
+    else{h+=`</div>`}
     const tH=(title,rows,lbl)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Radius</th><th>Insert</th><th>Grade</th><th>Tool Holder</th><th>${lbl}</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.radius)}</td><td>${S(r.insert)}</td><td>${S(r.grade)}</td><td>${S(r.toolHolder)}</td><td>${S(r.lastCol)}</td></tr>`});return s+`</tbody></table>`};
+    const pH=(title,rows)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Lista</th><th>Drawer</th><th>Location</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.lista)}</td><td>${S(r.drw)}</td><td>${S(r.loc)}</td></tr>`});return s+`</tbody></table>`};
+    const mTH=(title,rows)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Sub #</th><th>Tool</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.sub)}</td><td>${S(r.tool)}</td></tr>`});return s+`</tbody></table>`};
     if(type==='mtc'){h+=`<h3>Loader</h3><table><thead><tr><th>Gripper</th><th>Finger Size</th><th>Stop #</th><th>Stop Desc</th></tr></thead><tbody>`;['A','B','E','F'].forEach((g,i)=>{const r=(data.loader||[])[i]||{};h+=`<tr><td>${g}</td><td>${S(r.fingerSize)}</td><td>${S(r.stopNumber)}</td><td>${S(r.stopDesc)}</td></tr>`});h+=`</tbody></table>`;h+=tH('Left Side Cutting',data.leftCutting,'Tool Number');h+=tH('Right Side Cutting',data.rightCutting,'Tool Number')}
     if(type==='tmy'){h+=tH('Turret 1',data.turret1,'Location');h+=tH('Turret 2',data.turret2,'Location');h+=tH('Turret 3',data.turret3,'Location')}
     if(type==='lathe'){h+=tH('Tooling',data.tooling,'Location')}
+    if(type==='mill'){h+=pH('1st Pallet - Collets',data.pallet1Collets);h+=pH('1st Pallet - Stops',data.pallet1Stops);h+=mTH('1st Pallet - Tooling',data.pallet1Tools);h+=pH('2nd Pallet - Collets',data.pallet2Collets);h+=pH('2nd Pallet - Stops',data.pallet2Stops);h+=mTH('2nd Pallet - Tooling',data.pallet2Tools);if(data.comments)h+=`<h3>Comments</h3><p>${S(data.comments).replace(/\n/g,'<br>')}</p>`}
     if(data.notes)h+=`<h3>Notes</h3><p>${S(data.notes).replace(/\n/g,'<br>')}</p>`;
     h+=`<br><button onclick="window.print()">Print</button></body></html>`;
     w.document.write(h);w.document.close();
@@ -636,112 +601,124 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
       <button className="back-btn" onClick={handleBack}>&larr; Back to list</button>
       <div style={{display:'flex',alignItems:'center',gap:8}}>
         {readOnly&&<span style={{fontSize:11,color:'var(--amber)',fontWeight:500}}>READ ONLY</span>}
-        <span style={{fontSize:12,color:'var(--text3)'}}>{data.machine}</span>
-      </div>
-    </div>
+        <span style={{fontSize:12,color:'var(--text3)'}}>{data.machine}</span></div></div>
 
     {hasChanged&&!readOnly&&<div className="unsaved-bar"><span>Unsaved changes</span><button className="btn-green btn-sm" onClick={handleSave} disabled={saving}>{saving?'Saving...':'Save now'}</button></div>}
 
-    {/* Part Photo */}
-    <div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Part photo</div>
-      <ImageUpload image={data.image} onChange={v=>set('image',v)} disabled={readOnly} label="Tap to add part photo"/>
-    </div>
+    <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Part photo</div>
+      <ImageUpload image={data.image} onChange={v=>set('image',v)} disabled={readOnly} label="Tap to add part photo"/></div>
 
-    {/* Part Info - MTC */}
-    {type==='mtc'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Part info</div>
+    {/* ── MTC Part Info ── */}
+    {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Part info</div>
       <div className="field-grid cols-4">
         <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div>
         <div className="field"><label>Program #</label><CapsInput value={data.programNumber} onChange={v=>set('programNumber',v)} disabled={readOnly}/></div>
-        <div className="field"><label>PPH</label><CapsInput value={data.pph} onChange={v=>set('pph',v)} disabled={readOnly}/></div>
-      </div></div>}
+        <div className="field"><label>PPH</label><CapsInput value={data.pph} onChange={v=>set('pph',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* Part Info - TMY */}
-    {type==='tmy'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Part info</div>
+    {/* ── TMY Part Info ── */}
+    {type==='tmy'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Part info</div>
       <div className="field-grid cols-2">
         <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div>
-      </div></div>}
+        <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* Part Info - Lathe */}
-    {type==='lathe'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Part info</div>
+    {/* ── Lathe Part Info ── */}
+    {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Part info</div>
       <div className="field-grid cols-4">
         <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div>
         <div className="field"><label>Cycle time</label><CapsInput value={data.cycleTime} onChange={v=>set('cycleTime',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Machining OP</label><CapsInput value={data.machiningOp} onChange={v=>set('machiningOp',v)} disabled={readOnly}/></div>
-      </div></div>}
+        <div className="field"><label>Machining OP</label><CapsInput value={data.machiningOp} onChange={v=>set('machiningOp',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* Collet - MTC */}
-    {type==='mtc'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; spindle</div>
-      <div className="field-grid cols-2" style={{marginBottom:10}}>
-        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={data.colletLocation} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/>
+    {/* ── Mill Part Info ── */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--teal)'}}/> Part info</div>
+      <div className="field-grid cols-3">
+        <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
+        <div className="field"><label>OP</label><CapsInput value={data.op} onChange={v=>set('op',v)} disabled={readOnly}/></div>
+        <div className="field"><label>Main P#</label><CapsInput value={data.mainPartNumber} onChange={v=>set('mainPartNumber',v)} disabled={readOnly}/></div>
       </div>
+      <div className="field" style={{marginTop:10}}><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly} style={{maxWidth:120}}/></div></div>}
+
+    {/* ── Mill Op Types ── */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--teal)'}}/> Operation types</div>
+      <OpChips selected={data.opTypes} onChange={v=>set('opTypes',v)} disabled={readOnly}/></div>}
+
+    {/* ── MTC Collet & Spindle ── */}
+    {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; spindle</div>
+      <div className="field-grid cols-2" style={{marginBottom:10}}>
+        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={data.colletLocation} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
         <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Left collet</div>
           <ColletField typeValue={data.leftColletType} sizeValue={data.leftColletSize} onTypeChange={v=>set('leftColletType',v)} onSizeChange={v=>set('leftColletSize',v)} disabled={readOnly}/>
           <div className="field" style={{marginTop:8}}><label>Spindle slot</label><CapsInput value={data.leftSpindleSlot} onChange={v=>set('leftSpindleSlot',v)} disabled={readOnly}/></div></div>
         <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Right collet</div>
           <ColletField typeValue={data.rightColletType} sizeValue={data.rightColletSize} onTypeChange={v=>set('rightColletType',v)} onSizeChange={v=>set('rightColletSize',v)} disabled={readOnly}/>
-          <div className="field" style={{marginTop:8}}><label>Spindle slot</label><CapsInput value={data.rightSpindleSlot} onChange={v=>set('rightSpindleSlot',v)} disabled={readOnly}/></div></div>
-      </div></div>}
+          <div className="field" style={{marginTop:8}}><label>Spindle slot</label><CapsInput value={data.rightSpindleSlot} onChange={v=>set('rightSpindleSlot',v)} disabled={readOnly}/></div></div></div></div>}
 
-    {/* Collets - TMY */}
-    {type==='tmy'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collets</div>
+    {/* ── TMY Collets ── */}
+    {type==='tmy'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collets</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
         <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>1st collet</div>
           <ColletField typeValue={data.collet1Type} sizeValue={data.collet1} onTypeChange={v=>set('collet1Type',v)} onSizeChange={v=>set('collet1',v)} disabled={readOnly}/></div>
         <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>2nd collet</div>
-          <ColletField typeValue={data.collet2Type} sizeValue={data.collet2} onTypeChange={v=>set('collet2Type',v)} onSizeChange={v=>set('collet2',v)} disabled={readOnly}/></div>
-      </div></div>}
+          <ColletField typeValue={data.collet2Type} sizeValue={data.collet2} onTypeChange={v=>set('collet2Type',v)} onSizeChange={v=>set('collet2',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* Collet - Lathe */}
-    {type==='lathe'&&<div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; stop</div>
+    {/* ── Lathe Collet & Stop ── */}
+    {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; stop</div>
       <ColletField typeValue={data.colletStyleType} sizeValue={data.colletSize} onTypeChange={v=>set('colletStyleType',v)} onSizeChange={v=>set('colletSize',v)} typeLabel="Collet style" sizeLabel="Collet size" disabled={readOnly}/>
       <div className="field-grid cols-3" style={{marginTop:10}}>
         <div className="field"><label>Collet type</label><CapsInput value={data.colletType} onChange={v=>set('colletType',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={S(data.colletLocation)} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/>
-      </div>
+        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={S(data.colletLocation)} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
       <div className="field-grid cols-3" style={{marginTop:10}}>
         <div className="field"><label>Stop type</label><CapsInput value={data.stopType} onChange={v=>set('stopType',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Stop location</label><CapsInput value={data.stopLocation} onChange={v=>set('stopLocation',v)} disabled={readOnly}/></div><div/>
+        <div className="field"><label>Stop location</label><CapsInput value={data.stopLocation} onChange={v=>set('stopLocation',v)} disabled={readOnly}/></div><div/></div></div>}
+
+    {/* ── Mill Pallets ── */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> 1st Pallet</div>
+      <div className="pallet-grid">
+        <div><PalletTable rows={data.pallet1Collets} onChange={v=>set('pallet1Collets',v)} disabled={readOnly} label="Collets"/></div>
+        <div><PalletTable rows={data.pallet1Stops} onChange={v=>set('pallet1Stops',v)} disabled={readOnly} label="Stops"/></div>
       </div></div>}
 
-    {/* Loader - MTC */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--amber)'}}/> 2nd Pallet</div>
+      <div className="pallet-grid">
+        <div><PalletTable rows={data.pallet2Collets} onChange={v=>set('pallet2Collets',v)} disabled={readOnly} label="Collets"/></div>
+        <div><PalletTable rows={data.pallet2Stops} onChange={v=>set('pallet2Stops',v)} disabled={readOnly} label="Stops"/></div>
+      </div></div>}
+
+    {/* ── Mill Tooling ── */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 1st Pallet tooling</div>
+      <MillToolTable rows={data.pallet1Tools} onChange={v=>set('pallet1Tools',v)} disabled={readOnly}/></div>}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 2nd Pallet tooling</div>
+      <MillToolTable rows={data.pallet2Tools} onChange={v=>set('pallet2Tools',v)} disabled={readOnly}/></div>}
+
+    {/* ── Mill Comments ── */}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Comments</div>
+      <textarea value={S(data.comments)} onChange={e=>{setData(d=>{const nd={...d,comments:e.target.value};setSaved(JSON.stringify(nd)===initialJson);return nd})}} placeholder="Comments specific to this mill setup..." rows={4} disabled={readOnly}/></div>}
+
+    {/* ── MTC Loader ── */}
     {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Loader</div><LoaderTable rows={data.loader} onChange={v=>set('loader',v)} disabled={readOnly}/></div>}
 
-    {/* Cutting - MTC */}
+    {/* ── MTC Cutting ── */}
     {type==='mtc'&&<><div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Left side cutting</div><ToolingTable rows={data.leftCutting} onChange={v=>set('leftCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div>
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Right side cutting</div><ToolingTable rows={data.rightCutting} onChange={v=>set('rightCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div></>}
 
-    {/* Turrets - TMY */}
+    {/* ── TMY Turrets ── */}
     {type==='tmy'&&<>{[1,2,3].map(n=><div className="section" key={n}><div className="section-title"><span className="section-dot" style={{background:['var(--accent)','var(--amber)','var(--coral)'][n-1]}}/> Turret {n}</div><ToolingTable rows={data[`turret${n}`]} onChange={v=>set(`turret${n}`,v)} lastColLabel="Location" disabled={readOnly}/></div>)}</>}
 
-    {/* Tooling - Lathe */}
+    {/* ── Lathe Tooling ── */}
     {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Tooling</div><ToolingTable rows={data.tooling} onChange={v=>set('tooling',v)} lastColLabel="Location" disabled={readOnly}/></div>}
 
-    {/* Notes */}
+    {/* ── Notes ── */}
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Setup notes</div>
       <textarea value={S(data.notes)} onChange={e=>{setData(d=>{const nd={...d,notes:e.target.value};setSaved(JSON.stringify(nd)===initialJson);return nd})}} placeholder="Free-form setup instructions, tips, warnings..." rows={4} disabled={readOnly}/></div>
 
-    {/* Setup Photo */}
-    <div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Setup photo</div>
-      <ImageUpload image={data.setupPhoto} onChange={v=>set('setupPhoto',v)} disabled={readOnly} label="Tap to photograph machine setup"/>
-    </div>
+    <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Setup photo</div>
+      <ImageUpload image={data.setupPhoto} onChange={v=>set('setupPhoto',v)} disabled={readOnly} label="Tap to photograph machine setup"/></div>
 
-    {/* Attachments */}
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--amber)'}}/> Attachments</div>
       <FileAttachments files={data.files||[]} onFilesChange={v=>set('files',v)} disabled={readOnly}/></div>
 
-    {/* Run History */}
     <div className="section"><RunHistory entries={data.runHistory||[]} onChange={v=>set('runHistory',v)} disabled={readOnly}/></div>
 
     <button className="audit-btn" onClick={()=>setShowAudit(true)}>View edit history</button>
@@ -757,8 +734,7 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
       <div className="modal-panel" onClick={e=>e.stopPropagation()}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
           <span style={{fontWeight:600}}>Edit history</span>
-          <button style={{background:'none',border:'none',color:'var(--text3)',fontSize:18,cursor:'pointer'}} onClick={()=>setShowAudit(false)}>&times;</button>
-        </div>
+          <button style={{background:'none',border:'none',color:'var(--text3)',fontSize:18,cursor:'pointer'}} onClick={()=>setShowAudit(false)}>&times;</button></div>
         {audit.length===0&&<div style={{color:'var(--text3)',fontSize:13}}>No history yet.</div>}
         {audit.map((a,i)=><div className="audit-entry" key={i}><span className="who">{a.who}</span> <span className="when">{new Date(a.when).toLocaleString()}</span><div className="what">{a.action}</div></div>)}
       </div></div>}
@@ -774,8 +750,7 @@ function SettingsView({onBack,userRole}){
   const[newName,setNewName]=useState('');const[newType,setNewType]=useState('lathe');
   const[roles,setRolesState]=useState(loadRoles());
   const[newEmail,setNewEmail]=useState('');const[newRole,setNewRole]=useState(ROLES.MODIFY);
-  const[colletTypes,setCT]=useState(getColletTypes());
-  const[newCT,setNewCT]=useState('');
+  const[colletTypes,setCT]=useState(getColletTypes());const[newCT,setNewCT]=useState('');
 
   const addMachine=()=>{if(!newName.trim())return;const u=[...custom,{name:newName.trim().toUpperCase(),type:newType,color:MACHINE_TEMPLATES[newType]?.color||'lathe'}];setCustom(u);localStorage.setItem('jcm_custom_machines',JSON.stringify(u));setNewName('')};
   const removeMachine=(i)=>{const u=custom.filter((_,j)=>j!==i);setCustom(u);localStorage.setItem('jcm_custom_machines',JSON.stringify(u))};
@@ -785,38 +760,26 @@ function SettingsView({onBack,userRole}){
 
   return(<div>
     <div className="form-header"><button className="back-btn" onClick={onBack}>&larr; Back</button><span style={{fontSize:14,fontWeight:500}}>Settings</span></div>
-
-    <div className="section">
-      <div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Machines</div>
+    <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Machines</div>
       {Object.entries(MACHINE_TEMPLATES).map(([type,tmpl])=>tmpl.machines.map(m=><div className="machine-list-item" key={m}><div><span className="name">{m}</span> <span className="type">&mdash; {tmpl.label}</span></div></div>))}
       {custom.map((m,i)=><div className="machine-list-item" key={'c'+i}><div><span className="name">{m.name}</span> <span className="type">&mdash; {m.type}</span></div><button className="btn-danger btn-sm" onClick={()=>removeMachine(i)}>Remove</button></div>)}
       {isAdmin(userRole)&&<div style={{display:'flex',gap:8,marginTop:12}}>
         <input className="caps" value={newName} onChange={e=>setNewName(e.target.value.toUpperCase())} placeholder="Machine name" style={{flex:1}}/>
         <select value={newType} onChange={e=>setNewType(e.target.value)} style={{width:140}}>
-          <option value="mtc">MTC</option><option value="tmy">TMY</option><option value="lathe">Lathe</option>
+          <option value="mtc">MTC</option><option value="tmy">TMY</option><option value="lathe">Lathe</option><option value="mill">Mill</option>
         </select><button className="btn-accent" onClick={addMachine}>Add</button></div>}
     </div>
-
-    {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}>
-      <div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet types</div>
-      <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:12}}>
-        {colletTypes.map(t=><span key={t} style={{background:'var(--bg4)',padding:'4px 12px',borderRadius:6,fontSize:13}}>{t}</span>)}
-      </div>
-      <div style={{display:'flex',gap:8}}>
-        <input className="caps" value={newCT} onChange={e=>setNewCT(e.target.value.toUpperCase())} placeholder="New collet type" style={{flex:1}}/>
-        <button className="btn-accent" onClick={handleAddCT}>Add</button>
-      </div></div>}
-
-    {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}>
-      <div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> User roles</div>
+    {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet types</div>
+      <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:12}}>{colletTypes.map(t=><span key={t} style={{background:'var(--bg4)',padding:'4px 12px',borderRadius:6,fontSize:13}}>{t}</span>)}</div>
+      <div style={{display:'flex',gap:8}}><input className="caps" value={newCT} onChange={e=>setNewCT(e.target.value.toUpperCase())} placeholder="New collet type" style={{flex:1}}/><button className="btn-accent" onClick={handleAddCT}>Add</button></div></div>}
+    {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> User roles</div>
       <div style={{fontSize:12,color:'var(--text3)',marginBottom:12}}>Admin = full access. Modify = edit existing. Create = add new only. Read = view/search/print. Use * as email for default role.</div>
       {Object.entries(roles).map(([email,role])=><div className="machine-list-item" key={email}><div><span className="name">{email}</span> <span className={`role-badge ${ROLE_CLASSES[role]}`}>{ROLE_LABELS[role]}</span></div><button className="btn-danger btn-sm" onClick={()=>removeRole(email)}>Remove</button></div>)}
       <div style={{display:'flex',gap:8,marginTop:12}}>
         <input value={newEmail} onChange={e=>setNewEmail(e.target.value)} placeholder="Email or * for default" style={{flex:1}}/>
         <select value={newRole} onChange={e=>setNewRole(e.target.value)} style={{width:140}}>
           <option value={ROLES.ADMIN}>Admin</option><option value={ROLES.MODIFY}>Modify</option><option value={ROLES.CREATE}>Create</option><option value={ROLES.READ}>Read Only</option>
-        </select><button className="btn-accent" onClick={addRole}>Add</button></div>
-    </div>}
+        </select><button className="btn-accent" onClick={addRole}>Add</button></div></div>}
   </div>);
 }
 
@@ -831,8 +794,7 @@ function MachinePicker({onSelect,onCancel}){
       <div style={{fontSize:12,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:8}}>{MACHINE_TEMPLATES[type]?.label||type}</div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(120px,1fr))',gap:8}}>
         {ms.map(m=><div key={m.name} className="part-card" style={{textAlign:'center',padding:16,display:'block'}} onClick={()=>onSelect(m.name)}>
-          <div className={`machine-pill ${m.color}`}>{m.name}</div></div>)}
-      </div></div>)}
+          <div className={`machine-pill ${m.color}`}>{m.name}</div></div>)}</div></div>)}
   </div>);
 }
 
@@ -870,27 +832,12 @@ function App(){
             setUserEmail((account.username||'').toLowerCase());
             setUserRole(getUserRole((account.username||'').toLowerCase()));
             _useGraph=true;
-            try{
-              const tr=await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account});
-              console.log('Token scopes:',tr.scopes);
-              console.log('Token expires:',tr.expiresOn);
-            }catch(e){console.warn('Initial token acquire failed:',e);_useGraph=false}
-            if(_useGraph){
-              const sheets=await loadSheetsFromGraph();
-              if(sheets!==null){
-                console.log('Loaded',sheets.length,'sheets from SharePoint');
-                setSyncStatus('cloud');
-                setData(sheets);setView('list');return;
-              }else{
-                console.warn('Graph load returned null, falling back to local');
-                setSyncStatus('local');
-              }
-            }
+            try{const tr=await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account});console.log('Token scopes:',tr.scopes);console.log('Token expires:',tr.expiresOn)}catch(e){console.warn('Token acquire failed:',e);_useGraph=false}
+            if(_useGraph){const sheets=await loadSheetsFromGraph();if(sheets!==null){console.log('Loaded',sheets.length,'sheets from SharePoint');setSyncStatus('cloud');setData(sheets);setView('list');return}else{console.warn('Graph load null, fallback local');setSyncStatus('local')}}
           }
         }catch(e){console.warn('MSAL error:',e)}
       }
-      setSyncStatus('local');
-      setData(loadLocal());setView('list');
+      setSyncStatus('local');setData(loadLocal());setView('list');
     })();
   },[]);
 
@@ -919,7 +866,7 @@ function App(){
         return result;
       }
     }
-    if(search){const q=search.toUpperCase();result=result.filter(s=>S(s.partNumber).toUpperCase().includes(q)||S(s.programNumber).toUpperCase().includes(q)||S(s.machine).toUpperCase().includes(q)||S(s.colletLocation).toUpperCase().includes(q)||S(s.notes).toUpperCase().includes(q))}
+    if(search){const q=search.toUpperCase();result=result.filter(s=>S(s.partNumber).toUpperCase().includes(q)||S(s.programNumber).toUpperCase().includes(q)||S(s.machine).toUpperCase().includes(q)||S(s.colletLocation).toUpperCase().includes(q)||S(s.notes).toUpperCase().includes(q)||S(s.mainPartNumber).toUpperCase().includes(q)||S(s.op).toUpperCase().includes(q)||S(s.comments).toUpperCase().includes(q))}
     if(machineFilter!=='all')result=result.filter(s=>s.machine===machineFilter);
     if(tab==='recent')result.sort((a,b)=>new Date(b.updatedAt||0)-new Date(a.updatedAt||0));
     else result.sort((a,b)=>S(a.partNumber).localeCompare(S(b.partNumber)));
@@ -931,16 +878,11 @@ function App(){
     if(isDuplicate||!data.find(s=>s.id===sheet.id))updated=[...data,sheet];
     else updated=data.map(s=>s.id===sheet.id?sheet:s);
     setData(updated);
-    if(_useGraph){
-      const ok=await saveSheetToGraph(sheet);
-      if(!ok){saveLocal(updated);setSyncStatus('error');return false}
-      setSyncStatus('cloud');
-    }else{saveLocal(updated)}
+    if(_useGraph){const ok=await saveSheetToGraph(sheet);if(!ok){saveLocal(updated);setSyncStatus('error');return false}setSyncStatus('cloud')}else{saveLocal(updated)}
     return true;
   };
   const handleDelete=async(id,silent)=>{
-    const sheet=data.find(s=>s.id===id);
-    const updated=data.filter(s=>s.id!==id);setData(updated);
+    const sheet=data.find(s=>s.id===id);const updated=data.filter(s=>s.id!==id);setData(updated);
     if(_useGraph&&sheet?._itemId)await deleteSheetFromGraph(sheet);else saveLocal(updated);
     setView('list');
   };
@@ -965,40 +907,32 @@ function App(){
         <span className="user-badge">{userName}</span>
         <span className={`role-badge ${ROLE_CLASSES[userRole]}`}>{ROLE_LABELS[userRole]}</span>
         {isAdmin(userRole)&&<button style={{fontSize:12,padding:'6px 12px'}} onClick={()=>setView('settings')}>Settings</button>}
-      </div>
-    </div>
+      </div></div>
 
     <div className="tab-row">
       <button className={`tab-btn${tab==='all'?' active':''}`} onClick={()=>setTab('all')}>All parts</button>
       <button className={`tab-btn${tab==='recent'?' active':''}`} onClick={()=>setTab('recent')}>Recent</button>
       <button className={`tab-btn${tab==='collet'?' active':''}`} onClick={()=>setTab('collet')}>Collet search</button>
-      <button className={`tab-btn${tab==='notes'?' active':''}`} onClick={()=>setTab('notes')}>Notes</button>
-    </div>
+      <button className={`tab-btn${tab==='notes'?' active':''}`} onClick={()=>setTab('notes')}>Notes</button></div>
 
-    {tab==='notes'&&<div style={{marginBottom:16}}>
-      <div className="search-row">
-        <input className="caps" value={search} onChange={e=>setSearch(e.target.value.toUpperCase())} placeholder="Enter part number to see all notes..."/>
-        <button className="btn-accent" onClick={()=>{if(search.trim()){setNotesPN(search.trim());setView('notes')}}}>View notes</button>
-      </div></div>}
+    {tab==='notes'&&<div style={{marginBottom:16}}><div className="search-row">
+      <input className="caps" value={search} onChange={e=>setSearch(e.target.value.toUpperCase())} placeholder="Enter part number to see all notes..."/>
+      <button className="btn-accent" onClick={()=>{if(search.trim()){setNotesPN(search.trim());setView('notes')}}}>View notes</button></div></div>}
 
     {tab!=='collet'&&tab!=='notes'&&<div className="search-row">
       <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search part number, program, collet location..."/>
       <select value={machineFilter} onChange={e=>setMachineFilter(e.target.value)}>
-        <option value="all">All machines</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}
-      </select></div>}
+        <option value="all">All machines</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}</select></div>}
 
     {tab==='collet'&&<div className="collet-search-row">
       <div className="field" style={{width:100}}><label>Type</label>
         <select value={colletTypeFilter} onChange={e=>setColletTypeFilter(e.target.value)}>
-          <option value="">Any</option>{colletTypes.map(t=><option key={t} value={t}>{t}</option>)}
-        </select></div>
+          <option value="">Any</option>{colletTypes.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
       <div className="field" style={{width:120}}><label>Size</label><input value={colletSearch} onChange={e=>setColletSearch(e.target.value)} placeholder="e.g. 0.750"/></div>
       <div className="field" style={{width:80}}><label>- Tol</label><input value={tolMinus} onChange={e=>setTolMinus(e.target.value)}/></div>
       <div className="field" style={{width:80}}><label>+ Tol</label><input value={tolPlus} onChange={e=>setTolPlus(e.target.value)}/></div>
       <div className="field" style={{width:140}}><label>Machine</label><select value={machineFilter} onChange={e=>setMachineFilter(e.target.value)}>
-        <option value="all">All</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}
-      </select></div>
-    </div>}
+        <option value="all">All</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}</select></div></div>}
 
     {tab!=='notes'&&<div className="card-list">
       {filtered.length===0&&data.length>0&&<div className="empty-state"><p>No matching setup sheets.</p></div>}
@@ -1019,16 +953,14 @@ function App(){
               <div style={{display:'flex',alignItems:'center',gap:6}}>
                 {s._matchType==='exact'&&<span className="match-badge match-exact">Exact</span>}
                 {s._matchType==='close'&&<span className="match-badge match-close">Close</span>}
-                {s.rev&&<span className="rev-badge">Rev {s.rev}</span>}
-              </div>
-            </div>
+                {s.rev&&<span className="rev-badge">Rev {s.rev}</span>}</div></div>
             <div className="meta">
               <span className={`machine-pill ${getMachineColor(s.machine)}`}>{s.machine}</span>
               {s.programNumber&&<span>Prog {s.programNumber}</span>}
+              {s.op&&<span>OP {s.op}</span>}
               {ci.length>0&&<span>Collet {ci.join(' / ')}</span>}
-              <span>{relTime(s.updatedAt)}</span>
-            </div>
-          </div>
+              {(s.opTypes||[]).length>0&&<span>{s.opTypes.join(', ')}</span>}
+              <span>{relTime(s.updatedAt)}</span></div></div>
         </div>);
       })}
       {canCreate(userRole)&&<div className="new-card" onClick={()=>setView('new')}>+ New setup sheet</div>}
