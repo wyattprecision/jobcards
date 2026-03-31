@@ -87,8 +87,6 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .field-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
 .field-grid.cols-4{grid-template-columns:1fr 1fr 1fr 1fr}
 .field label{display:block;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.field .err{border-color:var(--red)}
-.field .err-msg{font-size:11px;color:var(--red);margin-top:2px}
 .tool-table{width:100%;border-collapse:separate;border-spacing:0}
 .tool-table th{text-align:left;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;border-bottom:1px solid var(--border2)}
 .tool-table td{padding:3px 4px}
@@ -110,11 +108,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .file-drop:hover{border-color:var(--border3);cursor:pointer}
 .file-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-top:6px;font-size:13px}
 .file-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-right:10px}
-.file-icon.pdf{background:var(--red-bg);color:var(--red)}
-.file-icon.img{background:var(--green-bg);color:var(--green)}
-.file-icon.cad{background:var(--accent-bg);color:var(--accent)}
-.file-icon.prog{background:var(--amber-bg);color:var(--amber)}
-.file-icon.other{background:var(--bg3);color:var(--text3)}
+.file-icon.pdf{background:var(--red-bg);color:var(--red)}.file-icon.img{background:var(--green-bg);color:var(--green)}.file-icon.cad{background:var(--accent-bg);color:var(--accent)}.file-icon.prog{background:var(--amber-bg);color:var(--amber)}.file-icon.other{background:var(--bg3);color:var(--text3)}
 .file-item .file-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .file-item .file-size{color:var(--text3);font-size:11px;margin-left:8px}
 .btn-bar{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
@@ -126,25 +120,17 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
 .modal-panel{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto}
 .audit-entry{padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
-.audit-entry .who{color:var(--accent);font-weight:500}
-.audit-entry .when{color:var(--text3);font-size:12px}
-.audit-entry .what{color:var(--text2);margin-top:2px}
+.audit-entry .who{color:var(--accent);font-weight:500}.audit-entry .when{color:var(--text3);font-size:12px}.audit-entry .what{color:var(--text2);margin-top:2px}
 .autocomplete-wrap{position:relative}
 .autocomplete-list{position:absolute;top:100%;left:0;right:0;background:var(--bg3);border:1px solid var(--border3);border-radius:8px;max-height:180px;overflow-y:auto;z-index:50;margin-top:2px;box-shadow:var(--shadow)}
-.autocomplete-item{padding:8px 12px;cursor:pointer;font-size:13px}
-.autocomplete-item:hover{background:var(--bg4)}
-.autocomplete-item.highlighted{background:var(--accent-bg);color:var(--accent)}
+.autocomplete-item{padding:8px 12px;cursor:pointer;font-size:13px}.autocomplete-item:hover{background:var(--bg4)}.autocomplete-item.highlighted{background:var(--accent-bg);color:var(--accent)}
 .tab-row{display:flex;gap:0;margin-bottom:16px;flex-wrap:wrap}
 .tab-btn{padding:8px 16px;font-size:13px;font-weight:500;border:1px solid var(--border2);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s}
-.tab-btn:first-child{border-radius:8px 0 0 8px}
-.tab-btn:last-child{border-radius:0 8px 8px 0}
-.tab-btn:not(:first-child){border-left:none}
+.tab-btn:first-child{border-radius:8px 0 0 8px}.tab-btn:last-child{border-radius:0 8px 8px 0}.tab-btn:not(:first-child){border-left:none}
 .tab-btn.active{background:var(--bg4);color:var(--text);border-color:var(--border3)}
 .empty-state{text-align:center;padding:40px 20px;color:var(--text3)}.empty-state p{margin-top:8px;font-size:13px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:8px;font-size:13px;font-weight:500;z-index:200;animation:fadeInUp .3s}
-.toast-ok{background:var(--green);color:#fff}
-.toast-warn{background:var(--amber);color:#fff}
-.toast-err{background:var(--red);color:#fff}
+.toast-ok{background:var(--green);color:#fff}.toast-warn{background:var(--amber);color:#fff}.toast-err{background:var(--red);color:#fff}
 @keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .notes-timeline{display:flex;flex-direction:column;gap:12px}
 .notes-timeline-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
@@ -160,9 +146,7 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .machine-list-item .name{font-weight:500}.machine-list-item .type{font-size:12px;color:var(--text3)}
 .unsaved-bar{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;padding:8px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--amber)}
 .sync-status{font-size:11px;padding:4px 10px;border-radius:6px;font-weight:500}
-.sync-ok{background:var(--green-bg);color:var(--green)}
-.sync-err{background:var(--red-bg);color:var(--red)}
-.sync-local{background:var(--amber-bg);color:var(--amber)}
+.sync-ok{background:var(--green-bg);color:var(--green)}.sync-err{background:var(--red-bg);color:var(--red)}.sync-local{background:var(--amber-bg);color:var(--amber)}
 .op-chips{display:flex;flex-wrap:wrap;gap:6px}
 .op-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);transition:all .15s;user-select:none}
 .op-chip:hover{border-color:var(--border3);color:var(--text2)}
@@ -186,13 +170,8 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.6.0/lib/msal-browser.min.js"></script>
 <script type="text/babel">
 const {useState,useEffect,useRef,useCallback,useMemo}=React;
-
-// Safe string helper
 const S=(v)=>v==null?'':String(v);
 
-// ═══════════════════════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════════════════════
 const CONFIG={
   clientId:'9be913e5-1835-43e7-9324-a70977721935',
   tenantId:'999ce3f5-e368-4404-8522-d6a555b1bb52',
@@ -202,32 +181,16 @@ const CONFIG={
 const ROLES={ADMIN:'admin',MODIFY:'modify',CREATE:'create',READ:'read'};
 const ROLE_LABELS={admin:'Admin',modify:'Modify',create:'Create',read:'Read Only'};
 const ROLE_CLASSES={admin:'role-admin',modify:'role-admin',create:'role-create',read:'role-read'};
-
-const SEED_AC={
-  radius:['.007','.010','.015','.031'],
-  insert:['TDAB','TDHB','VNMG 2.5-2NF','CUSTOM'],
-  grade:['KC5010','IC907','N/A'],
-  toolHolder:['5/16','20MM','3/8'],
-  colletType:['16C','5C'],
-};
-
+const SEED_AC={radius:['.007','.010','.015','.031'],insert:['TDAB','TDHB','VNMG 2.5-2NF','CUSTOM'],grade:['KC5010','IC907','N/A'],toolHolder:['5/16','20MM','3/8'],colletType:['16C','5C']};
 const MILL_OP_TYPES=['HEX','THREAD','BREAK','WEH','LWH','SLOT','FLATS','FACE'];
 
-// ═══════════════════════════════════════════════════════════════════════
-// MACHINE TEMPLATES
-// ═══════════════════════════════════════════════════════════════════════
 const MACHINE_TEMPLATES={
   mtc:{label:'MTC',color:'mtc',machines:['MTC 1','MTC 2']},
   tmy:{label:'TMY',color:'tmy',machines:['TMY 1']},
   lathe:{label:'Lathe',color:'lathe',machines:['CNC 1','CNC 2','CNC 3','CNC 4','CNC 5','GNT 1','GNT 2','PLT 1','PLT 2','PLT 3','PLT 4','PLT 5','PLT 6']},
   mill:{label:'Mill',color:'mill',machines:['KTM 1','KTM 2','KTM 3','KTM 4','BTR 1','GEN 1']},
 };
-function getAllMachines(){
-  const list=[];
-  const custom=JSON.parse(localStorage.getItem('jcm_custom_machines')||'[]');
-  Object.entries(MACHINE_TEMPLATES).forEach(([type,tmpl])=>tmpl.machines.forEach(m=>list.push({name:m,type,color:tmpl.color})));
-  custom.forEach(m=>list.push(m));return list;
-}
+function getAllMachines(){const list=[];const custom=JSON.parse(localStorage.getItem('jcm_custom_machines')||'[]');Object.entries(MACHINE_TEMPLATES).forEach(([type,tmpl])=>tmpl.machines.forEach(m=>list.push({name:m,type,color:tmpl.color})));custom.forEach(m=>list.push(m));return list}
 function getMachineType(n){const f=getAllMachines().find(m=>m.name===n);return f?f.type:'lathe'}
 function getMachineColor(n){const f=getAllMachines().find(m=>m.name===n);return f?f.color:'lathe'}
 
@@ -239,28 +202,56 @@ const GRAPH_SCOPES=['https://graph.microsoft.com/Sites.ReadWrite.All','https://g
 try{msalInstance=new msal.PublicClientApplication({auth:{clientId:CONFIG.clientId,authority:`https://login.microsoftonline.com/${CONFIG.tenantId}`,redirectUri:CONFIG.redirectUri},cache:{cacheLocation:'localStorage',storeAuthStateInCookie:true}})}catch(e){console.warn('MSAL init failed:',e)}
 
 async function getToken(){
-  if(!msalInstance)return null;
-  const accts=msalInstance.getAllAccounts();if(accts.length===0)return null;
-  try{const r=await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account:accts[0]});return r.accessToken}
-  catch(e){
-    console.warn('Silent token failed, trying redirect:',e);
-    try{await msalInstance.acquireTokenRedirect({scopes:GRAPH_SCOPES});return null}
-    catch(e2){console.error('Token redirect failed:',e2);return null}
-  }
+  if(!msalInstance)return null;const accts=msalInstance.getAllAccounts();if(accts.length===0)return null;
+  try{return(await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account:accts[0]})).accessToken}
+  catch(e){try{await msalInstance.acquireTokenRedirect({scopes:GRAPH_SCOPES});return null}catch{return null}}
 }
 async function graphFetch(url,opts={}){
-  const token=await getToken();
-  if(!token){console.warn('No token for:',url);return null}
-  console.log('Graph call:',url);
+  const token=await getToken();if(!token)return null;
+  console.log('Graph:',url);
   const r=await fetch(`https://graph.microsoft.com/v1.0${url}`,{...opts,headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json',...opts.headers}});
-  if(!r.ok){const txt=await r.text();console.error('Graph error:',r.status,url,txt);return null}
-  if(r.status===204)return {};return r.json();
+  if(!r.ok){const t=await r.text();console.error('Graph err:',r.status,url,t);return null}
+  if(r.status===204)return{};return r.json();
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// DATA LAYER — SharePoint saves jsonData as PLAIN TEXT
+// DATA LAYER
 // ═══════════════════════════════════════════════════════════════════════
-let _listId=null,_driveId=null,_useGraph=false;
+let _listId=null,_driveId=null,_useGraph=false,_columnsReady=false;
+
+// Columns we want in SharePoint for direct viewing
+const SP_COLUMNS=[
+  {name:'partNumber',displayName:'Part Number',text:{}},
+  {name:'rev',displayName:'Rev',text:{}},
+  {name:'machine',displayName:'Machine',text:{}},
+  {name:'templateType',displayName:'Template Type',text:{}},
+  {name:'programNumber',displayName:'Program #',text:{}},
+  {name:'op',displayName:'OP',text:{}},
+  {name:'mainPartNumber',displayName:'Main P#',text:{}},
+  {name:'pph',displayName:'PPH',text:{}},
+  {name:'updatedBy',displayName:'Updated By',text:{}},
+  {name:'updatedAt',displayName:'Updated At',text:{}},
+  {name:'setupNotes',displayName:'Setup Notes',text:{allowMultipleLines:true}},
+  {name:'colletInfo',displayName:'Collet Info',text:{allowMultipleLines:true}},
+  {name:'stopInfo',displayName:'Stop Info',text:{allowMultipleLines:true}},
+  {name:'loaderInfo',displayName:'Loader Info',text:{allowMultipleLines:true}},
+  {name:'leftCuttingInfo',displayName:'Left Cutting',text:{allowMultipleLines:true}},
+  {name:'rightCuttingInfo',displayName:'Right Cutting',text:{allowMultipleLines:true}},
+  {name:'turret1Info',displayName:'Turret 1',text:{allowMultipleLines:true}},
+  {name:'turret2Info',displayName:'Turret 2',text:{allowMultipleLines:true}},
+  {name:'turret3Info',displayName:'Turret 3',text:{allowMultipleLines:true}},
+  {name:'latheToolingInfo',displayName:'Lathe Tooling',text:{allowMultipleLines:true}},
+  {name:'opTypes',displayName:'Op Types',text:{}},
+  {name:'pallet1ColletsInfo',displayName:'P1 Collets',text:{allowMultipleLines:true}},
+  {name:'pallet1StopsInfo',displayName:'P1 Stops',text:{allowMultipleLines:true}},
+  {name:'pallet1ToolsInfo',displayName:'P1 Tooling',text:{allowMultipleLines:true}},
+  {name:'pallet2ColletsInfo',displayName:'P2 Collets',text:{allowMultipleLines:true}},
+  {name:'pallet2StopsInfo',displayName:'P2 Stops',text:{allowMultipleLines:true}},
+  {name:'pallet2ToolsInfo',displayName:'P2 Tooling',text:{allowMultipleLines:true}},
+  {name:'millComments',displayName:'Mill Comments',text:{allowMultipleLines:true}},
+  {name:'cycleTime',displayName:'Cycle Time',text:{}},
+  {name:'machiningOp',displayName:'Machining OP',text:{}},
+];
 
 async function ensureListId(){
   if(_listId)return _listId;
@@ -268,12 +259,85 @@ async function ensureListId(){
   if(r?.value?.length>0){_listId=r.value[0].id;return _listId}
   console.error('SetupSheets list not found.');return null;
 }
+
+async function ensureColumns(){
+  if(_columnsReady)return;
+  const lid=await ensureListId();if(!lid)return;
+  const existing=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/columns`);
+  if(!existing?.value)return;
+  const existingNames=new Set(existing.value.map(c=>c.name));
+  let created=0;
+  for(const col of SP_COLUMNS){
+    if(!existingNames.has(col.name)){
+      console.log('Creating column:',col.name);
+      const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/columns`,{method:'POST',body:JSON.stringify(col)});
+      if(r)created++;else console.warn('Failed to create column:',col.name);
+    }
+  }
+  if(created>0)console.log(`Created ${created} new columns`);
+  _columnsReady=true;
+}
+
 async function ensureDriveId(){if(_driveId)return _driveId;const r=await graphFetch(`/sites/${CONFIG.siteId}/drive`);if(r?.id){_driveId=r.id;return _driveId}return null}
 
-function stripHtml(str){
-  if(!str||typeof str!=='string')return str;
-  if(!str.includes('<'))return str;
-  try{const d=new DOMParser().parseFromString(str,'text/html');return d.body.textContent||''}catch{return str}
+function stripHtml(str){if(!str||typeof str!=='string')return str;if(!str.includes('<'))return str;try{return new DOMParser().parseFromString(str,'text/html').body.textContent||''}catch{return str}}
+
+// Flatten tooling rows for SharePoint viewing
+function flattenToolRows(rows){return(rows||[]).filter(r=>S(r.radius)||S(r.insert)||S(r.grade)||S(r.toolHolder)||S(r.lastCol)).map((r,i)=>`${i+1}: ${S(r.radius)} | ${S(r.insert)} | ${S(r.grade)} | ${S(r.toolHolder)} | ${S(r.lastCol)}`).join('\n')}
+function flattenPalletRows(rows){return(rows||[]).filter(r=>S(r.lista)||S(r.drw)||S(r.loc)).map((r,i)=>`${i+1}: Lista ${S(r.lista)} | Drw ${S(r.drw)} | Loc ${S(r.loc)}`).join('\n')}
+function flattenMillTools(rows){return(rows||[]).filter(r=>S(r.sub)||S(r.tool)).map((r,i)=>`${i+1}: Sub ${S(r.sub)} | ${S(r.tool)}`).join('\n')}
+function flattenLoader(rows){const g=['A','B','E','F'];return(rows||[]).filter(r=>S(r.fingerSize)||S(r.stopNumber)||S(r.stopDesc)).map((r,i)=>`${g[i]||i+1}: Finger ${S(r.fingerSize)} | Stop# ${S(r.stopNumber)} | ${S(r.stopDesc)}`).join('\n')}
+function flattenColletInfo(s){
+  const parts=[];
+  if(s.leftColletSize)parts.push(`Left: ${S(s.leftColletType)} ${S(s.leftColletSize)} Slot ${S(s.leftSpindleSlot)}`);
+  if(s.rightColletSize)parts.push(`Right: ${S(s.rightColletType)} ${S(s.rightColletSize)} Slot ${S(s.rightSpindleSlot)}`);
+  if(s.collet1)parts.push(`1st: ${S(s.collet1Type)} ${S(s.collet1)}`);
+  if(s.collet2)parts.push(`2nd: ${S(s.collet2Type)} ${S(s.collet2)}`);
+  if(s.colletSize)parts.push(`${S(s.colletStyleType)} ${S(s.colletSize)} (${S(s.colletType)}) Loc: ${S(s.colletLocation)}`);
+  if(s.type==='mtc'&&s.colletLocation)parts.push(`Location: ${S(s.colletLocation)}`);
+  return parts.join('\n');
+}
+function flattenStopInfo(s){
+  if(s.type==='lathe')return`Type: ${S(s.stopType)} | Location: ${S(s.stopLocation)}`;
+  return'';
+}
+
+// Build the flat fields object for SharePoint columns
+function buildSPFields(sheet){
+  return{
+    Title:S(sheet.partNumber)||sheet.id,
+    jsonData:JSON.stringify(sheet),
+    partNumber:S(sheet.partNumber),
+    rev:S(sheet.rev),
+    machine:S(sheet.machine),
+    templateType:S(sheet.type),
+    programNumber:S(sheet.programNumber),
+    op:S(sheet.op),
+    mainPartNumber:S(sheet.mainPartNumber),
+    pph:S(sheet.pph),
+    updatedBy:S(sheet._updatedBy),
+    updatedAt:S(sheet.updatedAt),
+    setupNotes:S(sheet.notes),
+    colletInfo:flattenColletInfo(sheet),
+    stopInfo:flattenStopInfo(sheet),
+    loaderInfo:flattenLoader(sheet.loader),
+    leftCuttingInfo:flattenToolRows(sheet.leftCutting),
+    rightCuttingInfo:flattenToolRows(sheet.rightCutting),
+    turret1Info:flattenToolRows(sheet.turret1),
+    turret2Info:flattenToolRows(sheet.turret2),
+    turret3Info:flattenToolRows(sheet.turret3),
+    latheToolingInfo:flattenToolRows(sheet.tooling),
+    opTypes:(sheet.opTypes||[]).join(', '),
+    pallet1ColletsInfo:flattenPalletRows(sheet.pallet1Collets),
+    pallet1StopsInfo:flattenPalletRows(sheet.pallet1Stops),
+    pallet1ToolsInfo:flattenMillTools(sheet.pallet1Tools),
+    pallet2ColletsInfo:flattenPalletRows(sheet.pallet2Collets),
+    pallet2StopsInfo:flattenPalletRows(sheet.pallet2Stops),
+    pallet2ToolsInfo:flattenMillTools(sheet.pallet2Tools),
+    millComments:S(sheet.comments),
+    cycleTime:S(sheet.cycleTime),
+    machiningOp:S(sheet.machiningOp),
+  };
 }
 
 async function loadSheetsFromGraph(){
@@ -281,42 +345,51 @@ async function loadSheetsFromGraph(){
   const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items?$expand=fields&$top=500`);
   if(!r?.value)return null;
   return r.value.map(i=>{
-    try{
-      let raw=S(i.fields.jsonData);
-      raw=stripHtml(raw);
-      if(!raw||!raw.trim().startsWith('{'))return null;
-      const parsed=JSON.parse(raw);
-      return{...parsed,partNumber:S(parsed.partNumber),rev:S(parsed.rev),machine:S(parsed.machine),type:parsed.type||getMachineType(S(parsed.machine)),notes:S(parsed.notes),_itemId:i.id};
+    try{let raw=S(i.fields.jsonData);raw=stripHtml(raw);if(!raw||!raw.trim().startsWith('{'))return null;
+      const p=JSON.parse(raw);return{...p,partNumber:S(p.partNumber),rev:S(p.rev),machine:S(p.machine),type:p.type||getMachineType(S(p.machine)),notes:S(p.notes),_itemId:i.id,_needsBackfill:!i.fields.partNumber};
     }catch(e){console.warn('Bad jsonData in item',i.id,e.message);return null}
   }).filter(Boolean);
 }
 
 async function saveSheetToGraph(sheet){
   const lid=await ensureListId();if(!lid)return false;
-  const jsonStr=JSON.stringify(sheet);
-  const fields={Title:S(sheet.partNumber)||sheet.id,jsonData:jsonStr};
+  const fields=buildSPFields(sheet);
   try{
     if(sheet._itemId){
       const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}/fields`,{method:'PATCH',body:JSON.stringify(fields)});
-      if(!r){console.error('PATCH failed');return false}
+      if(!r)return false;
     }else{
       const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items`,{method:'POST',body:JSON.stringify({fields})});
-      if(r){sheet._itemId=r.id;console.log('Created item:',r.id)}else{console.error('POST failed');return false}
+      if(r){sheet._itemId=r.id}else return false;
     }
     console.log('Saved:',S(sheet.partNumber));return true;
   }catch(e){console.error('Save error:',e);return false}
 }
+
+async function backfillSheets(sheets){
+  const needBackfill=sheets.filter(s=>s._needsBackfill&&s._itemId);
+  if(needBackfill.length===0)return;
+  console.log(`Backfilling ${needBackfill.length} records...`);
+  const lid=await ensureListId();if(!lid)return;
+  for(const sheet of needBackfill){
+    const fields=buildSPFields(sheet);
+    delete fields.jsonData;// don't re-write jsonData, just add the flat fields
+    delete fields.Title;
+    try{await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}/fields`,{method:'PATCH',body:JSON.stringify(fields)});console.log('Backfilled:',S(sheet.partNumber))}
+    catch(e){console.warn('Backfill failed for:',sheet._itemId,e)}
+  }
+  console.log('Backfill complete');
+}
+
 async function deleteSheetFromGraph(sheet){const lid=await ensureListId();if(!lid||!sheet._itemId)return false;await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}`,{method:'DELETE'});return true}
 
 async function uploadFileToGraph(partNumber,file){const did=await ensureDriveId();if(!did)return null;const token=await getToken();if(!token)return null;const folder=`JobCardManager/Files/${partNumber}`;const r=await fetch(`https://graph.microsoft.com/v1.0/drives/${did}/root:/${folder}/${file.name}:/content`,{method:'PUT',headers:{'Authorization':`Bearer ${token}`,'Content-Type':file.type||'application/octet-stream'},body:file});if(!r.ok)return null;return r.json()}
-async function listFilesFromGraph(partNumber){const did=await ensureDriveId();if(!did)return[];const folder=`JobCardManager/Files/${partNumber}`;const r=await graphFetch(`/drives/${did}/root:/${folder}:/children`);if(!r?.value)return[];return r.value.map(f=>({name:f.name,size:f.size,url:f['@microsoft.graph.downloadUrl']||f.webUrl,id:f.id}))}
-async function deleteFileFromGraph(fileId){const did=await ensureDriveId();if(!did)return;await graphFetch(`/drives/${did}/items/${fileId}`,{method:'DELETE'})}
 
 function loadLocal(){try{return JSON.parse(localStorage.getItem('jcm_data')||'[]')}catch{return[]}}
 function saveLocal(data){localStorage.setItem('jcm_data',JSON.stringify(data))}
 
 // ═══════════════════════════════════════════════════════════════════════
-// AUTOCOMPLETE
+// AUTOCOMPLETE / AUDIT / ROLES
 // ═══════════════════════════════════════════════════════════════════════
 function initAC(){const ac=loadAC();let ch=false;Object.entries(SEED_AC).forEach(([f,vs])=>{if(!ac[f])ac[f]=[];vs.forEach(v=>{if(!ac[f].includes(v)){ac[f].push(v);ch=true}});if(ch)ac[f].sort()});if(ch)saveAC(ac)}
 function loadAC(){try{return JSON.parse(localStorage.getItem('jcm_ac')||'{}')}catch{return{}}}
@@ -324,7 +397,6 @@ function saveAC(ac){localStorage.setItem('jcm_ac',JSON.stringify(ac))}
 function addAC(field,value){const sv=S(value).trim().toUpperCase();if(!sv)return;const ac=loadAC();if(!ac[field])ac[field]=[];if(!ac[field].includes(sv)){ac[field].push(sv);ac[field].sort();saveAC(ac)}}
 function getColletTypes(){const ac=loadAC();return ac.colletType||SEED_AC.colletType||[]}
 function addColletType(v){addAC('colletType',v)}
-
 function loadAudit(id){try{return JSON.parse(localStorage.getItem('jcm_audit_'+id)||'[]')}catch{return[]}}
 function addAudit(id,action,who){const l=loadAudit(id);l.unshift({who:who||'User',when:new Date().toISOString(),action});localStorage.setItem('jcm_audit_'+id,JSON.stringify(l.slice(0,200)))}
 function loadRoles(){try{return JSON.parse(localStorage.getItem('jcm_roles')||'{}')}catch{return{}}}
@@ -333,37 +405,38 @@ function getUserRole(email){const r=loadRoles();return r[email]||r['*']||ROLES.A
 function canCreate(role){return[ROLES.ADMIN,ROLES.MODIFY,ROLES.CREATE].includes(role)}
 function canModify(role){return[ROLES.ADMIN,ROLES.MODIFY].includes(role)}
 function isAdmin(role){return role===ROLES.ADMIN}
-
 function relTime(dateStr){if(!dateStr)return'--';const diff=Date.now()-new Date(dateStr).getTime();const mins=Math.floor(diff/60000);if(mins<1)return'Just now';if(mins<60)return`${mins}m ago`;const hrs=Math.floor(mins/60);if(hrs<24)return`${hrs}h ago`;const days=Math.floor(hrs/24);if(days<7)return`${days}d ago`;return new Date(dateStr).toLocaleDateString()}
+
+// ═══════════════════════════════════════════════════════════════════════
+// STATE PERSISTENCE for camera fix
+// ═══════════════════════════════════════════════════════════════════════
+const DRAFT_KEY='jcm_draft';
+function saveDraft(data){try{sessionStorage.setItem(DRAFT_KEY,JSON.stringify(data))}catch{}}
+function loadDraft(){try{const d=sessionStorage.getItem(DRAFT_KEY);return d?JSON.parse(d):null}catch{return null}}
+function clearDraft(){sessionStorage.removeItem(DRAFT_KEY)}
 
 // ═══════════════════════════════════════════════════════════════════════
 // UI COMPONENTS
 // ═══════════════════════════════════════════════════════════════════════
-function CapsInput({value,onChange,disabled,...props}){
-  return <input className="caps" value={S(value)} onChange={e=>onChange(e.target.value.toUpperCase())} disabled={disabled} {...props}/>;
-}
+function CapsInput({value,onChange,disabled,...props}){return <input className="caps" value={S(value)} onChange={e=>onChange(e.target.value.toUpperCase())} disabled={disabled} {...props}/>}
 
 function AutoInput({field,value,onChange,placeholder,disabled}){
-  const[open,setOpen]=useState(false);const[hl,setHl]=useState(-1);
-  const ac=loadAC();const sv=S(value).toUpperCase();
-  const opts=(ac[field]||[]).filter(v=>v.includes(sv)&&v!==sv);
-  const show=open&&opts.length>0&&sv.length>0;
+  const[open,setOpen]=useState(false);const[hl,setHl]=useState(-1);const ac=loadAC();const sv=S(value).toUpperCase();
+  const opts=(ac[field]||[]).filter(v=>v.includes(sv)&&v!==sv);const show=open&&opts.length>0&&sv.length>0;
   return(<div className="autocomplete-wrap">
-    <input className="caps" value={S(value)} onChange={e=>{onChange(e.target.value.toUpperCase());setOpen(true);setHl(-1)}}
-      onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),150)} disabled={disabled}
-      onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if(e.key==='Enter'&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}}
-      placeholder={placeholder}/>
+    <input className="caps" value={S(value)} onChange={e=>{onChange(e.target.value.toUpperCase());setOpen(true);setHl(-1)}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),150)} disabled={disabled}
+      onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if(e.key==='Enter'&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}} placeholder={placeholder}/>
     {show&&<div className="autocomplete-list">{opts.slice(0,10).map((o,i)=>(<div key={o} className={`autocomplete-item${i===hl?' highlighted':''}`} onMouseDown={()=>{onChange(o);setOpen(false)}}>{o}</div>))}</div>}
   </div>);
 }
 
 function ToolingTable({rows,onChange,lastColLabel,disabled}){
-  const safeRows=(rows||[]).length>0?rows:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}];
-  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
-  const add=()=>onChange([...safeRows,{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]);
-  const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
+  const sr=(rows||[]).length>0?rows:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}];
+  const upd=(i,f,v)=>{const n=[...sr];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
+  const add=()=>onChange([...sr,{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]);
+  const del=(i)=>{if(sr.length>1)onChange(sr.filter((_,j)=>j!==i))};
   return(<><table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Radius</th><th>Insert</th><th>Grade</th><th>Tool holder</th><th>{lastColLabel}</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
+    {sr.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
       <td><AutoInput field="radius" value={S(r.radius)} onChange={v=>upd(i,'radius',v)} disabled={disabled}/></td>
       <td><AutoInput field="insert" value={S(r.insert)} onChange={v=>upd(i,'insert',v)} disabled={disabled}/></td>
       <td><AutoInput field="grade" value={S(r.grade)} onChange={v=>upd(i,'grade',v)} disabled={disabled}/></td>
@@ -374,12 +447,12 @@ function ToolingTable({rows,onChange,lastColLabel,disabled}){
 }
 
 function MillToolTable({rows,onChange,disabled}){
-  const safeRows=(rows||[]).length>0?rows:[{sub:'',tool:''}];
-  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
-  const add=()=>onChange([...safeRows,{sub:'',tool:''}]);
-  const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
+  const sr=(rows||[]).length>0?rows:[{sub:'',tool:''}];
+  const upd=(i,f,v)=>{const n=[...sr];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
+  const add=()=>onChange([...sr,{sub:'',tool:''}]);
+  const del=(i)=>{if(sr.length>1)onChange(sr.filter((_,j)=>j!==i))};
   return(<><table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Sub #</th><th>Tool</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
+    {sr.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
       <td><CapsInput value={S(r.sub)} onChange={v=>upd(i,'sub',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.tool)} onChange={v=>upd(i,'tool',v)} disabled={disabled}/></td>
       {!disabled&&<td><button className="del-btn" onClick={()=>del(i)}>&times;</button></td>}</tr>)}
@@ -387,13 +460,13 @@ function MillToolTable({rows,onChange,disabled}){
 }
 
 function PalletTable({rows,onChange,disabled,label}){
-  const safeRows=(rows||[]).length>0?rows:[{lista:'',drw:'',loc:''}];
-  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
-  const add=()=>onChange([...safeRows,{lista:'',drw:'',loc:''}]);
-  const del=(i)=>{if(safeRows.length>1)onChange(safeRows.filter((_,j)=>j!==i))};
+  const sr=(rows||[]).length>0?rows:[{lista:'',drw:'',loc:''}];
+  const upd=(i,f,v)=>{const n=[...sr];n[i]={...n[i],[f]:S(v).toUpperCase()};onChange(n)};
+  const add=()=>onChange([...sr,{lista:'',drw:'',loc:''}]);
+  const del=(i)=>{if(sr.length>1)onChange(sr.filter((_,j)=>j!==i))};
   return(<><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>{label}</div>
     <table className="tool-table"><thead><tr><th style={{width:28}}></th><th>Lista</th><th>Drawer</th><th>Location</th>{!disabled&&<th style={{width:28}}></th>}</tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
+    {sr.map((r,i)=><tr key={i}><td className="row-num">{i+1}</td>
       <td><CapsInput value={S(r.lista)} onChange={v=>upd(i,'lista',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.drw)} onChange={v=>upd(i,'drw',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.loc)} onChange={v=>upd(i,'loc',v)} disabled={disabled}/></td>
@@ -401,18 +474,13 @@ function PalletTable({rows,onChange,disabled,label}){
   </tbody></table>{!disabled&&<button className="add-row-btn" onClick={add}>+ Add row</button>}</>);
 }
 
-function OpChips({selected,onChange,disabled}){
-  const sel=selected||[];
-  const toggle=(op)=>{if(disabled)return;if(sel.includes(op))onChange(sel.filter(o=>o!==op));else onChange([...sel,op])};
-  return(<div className="op-chips">{MILL_OP_TYPES.map(op=>(<div key={op} className={`op-chip${sel.includes(op)?' active':''}${disabled?' disabled':''}`} onClick={()=>toggle(op)}>{op}</div>))}</div>);
-}
+function OpChips({selected,onChange,disabled}){const sel=selected||[];const toggle=op=>{if(disabled)return;if(sel.includes(op))onChange(sel.filter(o=>o!==op));else onChange([...sel,op])};return(<div className="op-chips">{MILL_OP_TYPES.map(op=>(<div key={op} className={`op-chip${sel.includes(op)?' active':''}${disabled?' disabled':''}`} onClick={()=>toggle(op)}>{op}</div>))}</div>)}
 
 function LoaderTable({rows,onChange,disabled}){
-  const grippers=['A','B','E','F'];
-  const safeRows=(rows||[]).length>=4?rows:[{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''}];
-  const upd=(i,f,v)=>{const n=[...safeRows];n[i]={...n[i],[f]:S(v)};onChange(n)};
+  const g=['A','B','E','F'];const sr=(rows||[]).length>=4?rows:[{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''}];
+  const upd=(i,f,v)=>{const n=[...sr];n[i]={...n[i],[f]:S(v)};onChange(n)};
   return(<table className="tool-table"><thead><tr><th style={{width:50}}>Gripper</th><th>Finger size</th><th>Stop number</th><th>Stop description</th></tr></thead><tbody>
-    {safeRows.map((r,i)=><tr key={i}><td className="row-num" style={{fontWeight:500}}>{grippers[i]||i+1}</td>
+    {sr.map((r,i)=><tr key={i}><td className="row-num" style={{fontWeight:500}}>{g[i]||i+1}</td>
       <td><AutoInput field="fingerSize" value={S(r.fingerSize)} onChange={v=>upd(i,'fingerSize',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.stopNumber)} onChange={v=>upd(i,'stopNumber',v)} disabled={disabled}/></td>
       <td><CapsInput value={S(r.stopDesc)} onChange={v=>upd(i,'stopDesc',v)} disabled={disabled}/></td></tr>)}
@@ -420,14 +488,13 @@ function LoaderTable({rows,onChange,disabled}){
 }
 
 function RunHistory({entries,onChange,disabled}){
-  const[open,setOpen]=useState(false);const safeEntries=entries||[];
-  const add=()=>onChange([...safeEntries,{date:'',po:'',mach:'',cycle:'',mods:''}]);
-  const upd=(i,f,v)=>{const n=[...safeEntries];n[i]={...n[i],[f]:v};onChange(n)};
-  const del=(i)=>onChange(safeEntries.filter((_,j)=>j!==i));
+  const[open,setOpen]=useState(false);const se=entries||[];
+  const add=()=>onChange([...se,{date:'',po:'',mach:'',cycle:'',mods:''}]);
+  const upd=(i,f,v)=>{const n=[...se];n[i]={...n[i],[f]:v};onChange(n)};
+  const del=i=>onChange(se.filter((_,j)=>j!==i));
   return(<div style={{marginTop:8}}>
-    <div className="collapsible-header" onClick={()=>setOpen(!open)}>
-      <span>Run history ({safeEntries.length})</span><span className={`chevron${open?' open':''}`}>&#9654;</span></div>
-    {open&&<>{safeEntries.map((e,i)=>(<div key={i} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:8,padding:12,marginBottom:8}}>
+    <div className="collapsible-header" onClick={()=>setOpen(!open)}><span>Run history ({se.length})</span><span className={`chevron${open?' open':''}`}>&#9654;</span></div>
+    {open&&<>{se.map((e,i)=>(<div key={i} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:8,padding:12,marginBottom:8}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
         <span style={{fontSize:12,color:'var(--text3)',fontWeight:500}}>Entry {i+1}</span>
         {!disabled&&<button className="del-btn" style={{opacity:.6}} onClick={()=>del(i)}>&times;</button>}</div>
@@ -442,10 +509,11 @@ function RunHistory({entries,onChange,disabled}){
   </div>);
 }
 
-function ImageUpload({image,onChange,disabled,label}){
+function ImageUpload({image,onChange,disabled,label,onBeforeCapture}){
   const ref=useRef();
-  const handle=(e)=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=(ev)=>onChange(ev.target.result);r.readAsDataURL(f)};
-  return(<div className="img-upload" onClick={()=>!disabled&&ref.current.click()}>
+  const handle=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>onChange(ev.target.result);r.readAsDataURL(f)};
+  const click=()=>{if(disabled)return;if(onBeforeCapture)onBeforeCapture();ref.current.click()};
+  return(<div className="img-upload" onClick={click}>
     <input ref={ref} type="file" accept="image/*" capture="environment" style={{display:'none'}} onChange={handle} disabled={disabled}/>
     {image?<><img src={image} alt=""/>{!disabled&&<button className="remove-img" onClick={e=>{e.stopPropagation();onChange(null)}}>&times;</button>}</>
     :<div><div style={{fontSize:24,marginBottom:4}}>&#128247;</div><div>{label||'Tap to add photo'}</div><div style={{fontSize:12,marginTop:2}}>Camera or gallery</div></div>}
@@ -456,21 +524,19 @@ function getFileIcon(name){const ext=S(name).split('.').pop().toLowerCase();if([
 function formatSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
 
 function FileAttachments({files,onFilesChange,disabled}){
-  const[dragover,setDragover]=useState(false);const inputRef=useRef();const safeFiles=files||[];
-  const handleFiles=(fl)=>{const nf=[...safeFiles];Array.from(fl).forEach(f=>{const r=new FileReader();r.onload=(e)=>{nf.push({name:f.name,size:f.size,data:e.target.result,localFile:f});onFilesChange([...nf])};r.readAsDataURL(f)})};
+  const[dragover,setDragover]=useState(false);const inputRef=useRef();const sf=files||[];
+  const handleFiles=fl=>{const nf=[...sf];Array.from(fl).forEach(f=>{const r=new FileReader();r.onload=e=>{nf.push({name:f.name,size:f.size,data:e.target.result});onFilesChange([...nf])};r.readAsDataURL(f)})};
   return(<div>
     {!disabled&&<div className={`file-drop${dragover?' dragover':''}`} onClick={()=>inputRef.current.click()}
       onDragOver={e=>{e.preventDefault();setDragover(true)}} onDragLeave={()=>setDragover(false)}
       onDrop={e=>{e.preventDefault();setDragover(false);handleFiles(e.dataTransfer.files)}}>
       <input ref={inputRef} type="file" multiple style={{display:'none'}} onChange={e=>handleFiles(e.target.files)}/>
-      <div style={{fontSize:16,marginBottom:4}}>&#128206;</div>
-      <div style={{fontSize:13}}>Drop files here or tap to upload</div>
-      <div style={{fontSize:11,marginTop:2}}>Programs, CAD drawings, PDFs, images</div></div>}
-    {safeFiles.map((f,i)=>{const icon=getFileIcon(f.name);return(<div className="file-item" key={i}>
+      <div style={{fontSize:16,marginBottom:4}}>&#128206;</div><div style={{fontSize:13}}>Drop files or tap to upload</div></div>}
+    {sf.map((f,i)=>{const icon=getFileIcon(f.name);return(<div className="file-item" key={i}>
       <div className={`file-icon ${icon.cls}`}>{icon.label}</div>
       <span className="file-name">{f.name}</span><span className="file-size">{f.size?formatSize(f.size):''}</span>
       {f.url&&<a href={f.url} target="_blank" rel="noopener" style={{marginLeft:8,color:'var(--accent)',fontSize:12,textDecoration:'none'}}>Open</a>}
-      {!disabled&&<button className="del-btn" style={{opacity:.6,marginLeft:4}} onClick={()=>onFilesChange(safeFiles.filter((_,j)=>j!==i))}>&times;</button>}
+      {!disabled&&<button className="del-btn" style={{opacity:.6,marginLeft:4}} onClick={()=>onFilesChange(sf.filter((_,j)=>j!==i))}>&times;</button>}
     </div>)})}
   </div>);
 }
@@ -481,14 +547,10 @@ function ColletField({typeValue,sizeValue,onTypeChange,onSizeChange,typeLabel,si
     <div className="field"><label>{typeLabel||'Type'}</label>
       <select value={S(typeValue)} onChange={e=>onTypeChange(e.target.value)} disabled={disabled}>
         <option value="">--</option>{types.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
-    <div className="field"><label>{sizeLabel||'Size'}</label>
-      <CapsInput value={sizeValue} onChange={onSizeChange} placeholder="e.g. 0.750" disabled={disabled}/></div>
+    <div className="field"><label>{sizeLabel||'Size'}</label><CapsInput value={sizeValue} onChange={onSizeChange} placeholder="e.g. 0.750" disabled={disabled}/></div>
   </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// EMPTY SHEET
-// ═══════════════════════════════════════════════════════════════════════
 function emptySheet(machine){
   const type=getMachineType(machine);
   const base={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),machine,type,partNumber:'',rev:'',notes:'',image:null,setupPhoto:null,runHistory:[],files:[],createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
@@ -497,156 +559,120 @@ function emptySheet(machine){
   if(type==='mill')return{...base,op:'',mainPartNumber:'',opTypes:[],pallet1Collets:[{lista:'',drw:'',loc:''}],pallet1Stops:[{lista:'',drw:'',loc:''}],pallet2Collets:[{lista:'',drw:'',loc:''}],pallet2Stops:[{lista:'',drw:'',loc:''}],pallet1Tools:[{sub:'',tool:''}],pallet2Tools:[{sub:'',tool:''}],comments:''};
   return{...base,cycleTime:'',machiningOp:'',colletStyleType:'',colletSize:'',colletType:'',colletLocation:'',stopType:'',stopLocation:'',tooling:[{radius:'',insert:'',grade:'',toolHolder:'',lastCol:''}]};
 }
-
-function isSheetEmpty(s){
-  return !s.partNumber&&!s.rev&&!s.notes&&!s.image&&!s.setupPhoto&&(s.files||[]).length===0&&(s.runHistory||[]).length===0
-    &&!s.programNumber&&!s.pph&&!s.leftColletSize&&!s.rightColletSize&&!s.collet1&&!s.collet2
-    &&!s.cycleTime&&!s.machiningOp&&!s.colletSize&&!s.colletLocation
-    &&!s.op&&!s.mainPartNumber&&!(s.opTypes||[]).length&&!s.comments;
-}
+function isSheetEmpty(s){return !s.partNumber&&!s.rev&&!s.notes&&!s.image&&!s.setupPhoto&&(s.files||[]).length===0&&(s.runHistory||[]).length===0&&!s.programNumber&&!s.pph&&!s.leftColletSize&&!s.rightColletSize&&!s.collet1&&!s.collet2&&!s.cycleTime&&!s.machiningOp&&!s.colletSize&&!s.colletLocation&&!s.op&&!s.mainPartNumber&&!(s.opTypes||[]).length&&!s.comments}
 
 // ═══════════════════════════════════════════════════════════════════════
 // NOTES HISTORY VIEW
 // ═══════════════════════════════════════════════════════════════════════
 function NotesHistoryView({partNumber,data,onBack}){
   const sheets=data.filter(s=>S(s.partNumber).toUpperCase()===S(partNumber).toUpperCase()).sort((a,b)=>new Date(b.updatedAt||0)-new Date(a.updatedAt||0));
-  return(<div>
-    <div className="form-header"><button className="back-btn" onClick={onBack}>&larr; Back</button>
-      <span style={{fontSize:14,fontWeight:500}}>Notes: <span style={{fontFamily:'var(--mono)',color:'var(--accent)'}}>{partNumber}</span></span></div>
-    {sheets.length===0&&<div className="empty-state"><p>No setup sheets found for this part number.</p></div>}
+  return(<div><div className="form-header"><button className="back-btn" onClick={onBack}>&larr; Back</button>
+    <span style={{fontSize:14,fontWeight:500}}>Notes: <span style={{fontFamily:'var(--mono)',color:'var(--accent)'}}>{partNumber}</span></span></div>
+    {sheets.length===0&&<div className="empty-state"><p>No setup sheets found.</p></div>}
     <div className="notes-timeline">{sheets.map(s=>(<div className="notes-timeline-item" key={s.id}>
       <div className="nt-header"><span><span className="nt-machine">{s.machine}</span> &middot; Rev {s.rev||'--'}</span><span>{relTime(s.updatedAt)}</span></div>
       {s.notes?<div className="nt-body">{s.notes}</div>:<div style={{color:'var(--text3)',fontSize:13,fontStyle:'italic'}}>No notes</div>}
-      {(s.runHistory||[]).length>0&&<div className="nt-run">
-        <div style={{fontWeight:500,marginBottom:4}}>Run history ({s.runHistory.length})</div>
+      {(s.runHistory||[]).length>0&&<div className="nt-run"><div style={{fontWeight:500,marginBottom:4}}>Run history ({s.runHistory.length})</div>
         {s.runHistory.map((r,i)=><div key={i} style={{marginBottom:4}}>{r.date&&<span>{r.date} </span>}{r.po&&<span>PO: {r.po} </span>}{r.cycle&&<span>Cycle: {r.cycle}</span>}{r.mods&&<div style={{color:'var(--text2)',marginTop:2}}>{r.mods}</div>}</div>)}</div>}
-    </div>))}</div>
-  </div>);
+    </div>))}</div></div>);
 }
 
 // ═══════════════════════════════════════════════════════════════════════
 // FORM VIEW
 // ═══════════════════════════════════════════════════════════════════════
 function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
-  const[data,setData]=useState({...sheet});
+  const draft=loadDraft();
+  const initial=draft&&draft.id===sheet.id?draft:sheet;
+  const[data,setData]=useState({...initial});
   const[showAudit,setShowAudit]=useState(false);
   const[toast,setToast]=useState(null);
-  const[saved,setSaved]=useState(true);
+  const[saved,setSaved]=useState(!draft||draft.id!==sheet.id);
   const[saving,setSaving]=useState(false);
   const[initialJson]=useState(JSON.stringify(sheet));
-  const type=data.type;
-  const audit=loadAudit(data.id);
+  const type=data.type;const audit=loadAudit(data.id);
   const readOnly=!canModify(userRole)&&!(canCreate(userRole)&&!sheet._itemId);
-  const set=(f,v)=>{setData(d=>{const nd={...d,[f]:v};setSaved(JSON.stringify(nd)===initialJson);return nd})};
+  const set=(f,v)=>{setData(d=>{const nd={...d,[f]:v};setSaved(JSON.stringify(nd)===initialJson);saveDraft(nd);return nd})};
   const hasChanged=!saved;
-  const showToast=(msg,type='ok')=>{setToast({msg,type});setTimeout(()=>setToast(null),2500)};
+  const showToast=(msg,t='ok')=>{setToast({msg,type:t});setTimeout(()=>setToast(null),2500)};
 
-  const handleBack=()=>{if(isSheetEmpty(data)){onDelete(data.id,true);return}if(hasChanged&&!readOnly){if(!confirm('You have unsaved changes. Leave without saving?'))return}onBack()};
+  useEffect(()=>{if(draft&&draft.id===sheet.id){clearDraft()}},[]);
+
+  const handleBack=()=>{clearDraft();if(isSheetEmpty(data)){onDelete(data.id,true);return}if(hasChanged&&!readOnly){if(!confirm('Unsaved changes. Leave?'))return}onBack()};
   const checkDuplicate=()=>{if(!data.partNumber)return null;return allData.find(s=>s.id!==data.id&&S(s.partNumber).toUpperCase()===S(data.partNumber).toUpperCase()&&s.machine===data.machine&&S(s.rev).toUpperCase()===S(data.rev).toUpperCase())};
 
   const handleSave=async()=>{
-    if(readOnly)return;
-    if(!S(data.partNumber).trim()){showToast('Part number is required','err');return}
-    const dup=checkDuplicate();
-    if(dup){if(!confirm(`A setup sheet already exists for ${data.partNumber} on ${data.machine} Rev ${data.rev||'--'}. Save anyway?`))return}
+    if(readOnly)return;if(!S(data.partNumber).trim()){showToast('Part number is required','err');return}
+    const dup=checkDuplicate();if(dup){if(!confirm(`Sheet exists for ${data.partNumber} on ${data.machine} Rev ${data.rev||'--'}. Save anyway?`))return}
     const allTool=[...(data.leftCutting||[]),...(data.rightCutting||[]),...(data.turret1||[]),...(data.turret2||[]),...(data.turret3||[]),...(data.tooling||[])];
     allTool.forEach(r=>{addAC('radius',r.radius);addAC('insert',r.insert);addAC('grade',r.grade);addAC('toolHolder',r.toolHolder)});
-    (data.loader||[]).forEach(r=>addAC('fingerSize',r.fingerSize));
-    addAC('colletLocation',data.colletLocation);
+    (data.loader||[]).forEach(r=>addAC('fingerSize',r.fingerSize));addAC('colletLocation',data.colletLocation);
     const updated={...data,updatedAt:new Date().toISOString(),_updatedBy:userName};
-    addAudit(data.id,'Saved setup sheet',userName);
-    setSaving(true);const ok=await onSave(updated);setSaving(false);
-    setSaved(true);showToast(ok===false?'Save failed - check connection':'Saved',ok===false?'err':'ok');
+    addAudit(data.id,'Saved setup sheet',userName);setSaving(true);
+    const ok=await onSave(updated);setSaving(false);clearDraft();
+    setSaved(true);showToast(ok===false?'Save failed':'Saved',ok===false?'err':'ok');
   };
 
-  const handleDuplicate=()=>{
-    const dup={...data,id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),partNumber:S(data.partNumber)+' (COPY)',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),_itemId:undefined};
-    onSave(dup,true);showToast('Duplicated');
-  };
+  const handleBeforeCapture=()=>{saveDraft(data)};
+
+  const handleDuplicate=()=>{const dup={...data,id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),partNumber:S(data.partNumber)+' (COPY)',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),_itemId:undefined};onSave(dup,true);showToast('Duplicated')};
 
   const handlePrint=()=>{
     const w=window.open('','_blank');
-    let h=`<html><head><title>${S(data.partNumber)} - ${S(data.machine)}</title><style>
-      body{font-family:Arial,sans-serif;font-size:12px;padding:20px;color:#000}
-      h2{text-align:center;margin-bottom:16px}h3{margin:12px 0 6px}
-      table{width:100%;border-collapse:collapse;margin-bottom:16px}
-      th,td{border:1px solid #999;padding:4px 8px;text-align:left}th{background:#eee;font-weight:bold}
-      .hg{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-bottom:16px}.hg div{padding:2px 0}.lb{font-weight:bold}
-      .photos{display:flex;gap:16px;margin-bottom:16px}.photos img{max-width:300px;max-height:200px;border:1px solid #ccc;border-radius:4px}
-      .chips{margin:8px 0}.chip{display:inline-block;padding:2px 10px;border:1px solid #999;border-radius:12px;margin:2px;font-size:11px}
-      @media print{button{display:none}}
-    </style></head><body>`;
+    let h=`<html><head><title>${S(data.partNumber)} - ${S(data.machine)}</title><style>body{font-family:Arial,sans-serif;font-size:12px;padding:20px;color:#000}h2{text-align:center;margin-bottom:16px}h3{margin:12px 0 6px}table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #999;padding:4px 8px;text-align:left}th{background:#eee;font-weight:bold}.hg{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;margin-bottom:16px}.hg div{padding:2px 0}.lb{font-weight:bold}.photos{display:flex;gap:16px;margin-bottom:16px}.photos img{max-width:300px;max-height:200px;border:1px solid #ccc;border-radius:4px}.chips{margin:8px 0}.chip{display:inline-block;padding:2px 10px;border:1px solid #999;border-radius:12px;margin:2px;font-size:11px}@media print{button{display:none}}</style></head><body>`;
     h+=`<h2>${S(data.machine)} SET-UP SHEET</h2>`;
     if(data.image||data.setupPhoto){h+=`<div class="photos">`;if(data.image)h+=`<div><div style="font-weight:bold;margin-bottom:4px">Part Photo</div><img src="${data.image}"/></div>`;if(data.setupPhoto)h+=`<div><div style="font-weight:bold;margin-bottom:4px">Setup Photo</div><img src="${data.setupPhoto}"/></div>`;h+=`</div>`}
     h+=`<div class="hg"><div><span class="lb">Part Number:</span> ${S(data.partNumber)}</div><div><span class="lb">Rev:</span> ${S(data.rev)}</div>`;
     if(type==='mtc'){h+=`<div><span class="lb">Program:</span> ${S(data.programNumber)}</div><div><span class="lb">PPH:</span> ${S(data.pph)}</div><div><span class="lb">Collet Location:</span> ${S(data.colletLocation)}</div><div></div><div><span class="lb">Left Collet:</span> ${S(data.leftColletType)} ${S(data.leftColletSize)} / Slot ${S(data.leftSpindleSlot)}</div><div><span class="lb">Right Collet:</span> ${S(data.rightColletType)} ${S(data.rightColletSize)} / Slot ${S(data.rightSpindleSlot)}</div>`}
     if(type==='tmy'){h+=`<div><span class="lb">1st Collet:</span> ${S(data.collet1Type)} ${S(data.collet1)}</div><div><span class="lb">2nd Collet:</span> ${S(data.collet2Type)} ${S(data.collet2)}</div>`}
     if(type==='lathe'){h+=`<div><span class="lb">Cycle Time:</span> ${S(data.cycleTime)}</div><div><span class="lb">Machining OP:</span> ${S(data.machiningOp)}</div><div><span class="lb">Collet:</span> ${S(data.colletStyleType)} ${S(data.colletSize)} (${S(data.colletType)})</div><div><span class="lb">Collet Location:</span> ${S(data.colletLocation)}</div><div><span class="lb">Stop:</span> ${S(data.stopType)}</div><div><span class="lb">Stop Location:</span> ${S(data.stopLocation)}</div>`}
-    if(type==='mill'){h+=`<div><span class="lb">OP:</span> ${S(data.op)}</div><div><span class="lb">Main P#:</span> ${S(data.mainPartNumber)}</div>`;h+=`</div>`;if((data.opTypes||[]).length>0){h+=`<div class="chips"><span class="lb">Operations:</span> `;(data.opTypes||[]).forEach(o=>{h+=`<span class="chip">${o}</span> `});h+=`</div>`}else{h+=`</div>`}}
-    else{h+=`</div>`}
+    if(type==='mill'){h+=`<div><span class="lb">OP:</span> ${S(data.op)}</div><div><span class="lb">Main P#:</span> ${S(data.mainPartNumber)}</div>`;h+=`</div>`;if((data.opTypes||[]).length>0){h+=`<div class="chips"><span class="lb">Operations:</span> `;(data.opTypes||[]).forEach(o=>{h+=`<span class="chip">${o}</span> `});h+=`</div>`}else h+=`</div>`}
+    else h+=`</div>`;
     const tH=(title,rows,lbl)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Radius</th><th>Insert</th><th>Grade</th><th>Tool Holder</th><th>${lbl}</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.radius)}</td><td>${S(r.insert)}</td><td>${S(r.grade)}</td><td>${S(r.toolHolder)}</td><td>${S(r.lastCol)}</td></tr>`});return s+`</tbody></table>`};
     const pH=(title,rows)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Lista</th><th>Drawer</th><th>Location</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.lista)}</td><td>${S(r.drw)}</td><td>${S(r.loc)}</td></tr>`});return s+`</tbody></table>`};
     const mTH=(title,rows)=>{let s=`<h3>${title}</h3><table><thead><tr><th>#</th><th>Sub #</th><th>Tool</th></tr></thead><tbody>`;(rows||[]).forEach((r,i)=>{s+=`<tr><td>${i+1}</td><td>${S(r.sub)}</td><td>${S(r.tool)}</td></tr>`});return s+`</tbody></table>`};
     if(type==='mtc'){h+=`<h3>Loader</h3><table><thead><tr><th>Gripper</th><th>Finger Size</th><th>Stop #</th><th>Stop Desc</th></tr></thead><tbody>`;['A','B','E','F'].forEach((g,i)=>{const r=(data.loader||[])[i]||{};h+=`<tr><td>${g}</td><td>${S(r.fingerSize)}</td><td>${S(r.stopNumber)}</td><td>${S(r.stopDesc)}</td></tr>`});h+=`</tbody></table>`;h+=tH('Left Side Cutting',data.leftCutting,'Tool Number');h+=tH('Right Side Cutting',data.rightCutting,'Tool Number')}
     if(type==='tmy'){h+=tH('Turret 1',data.turret1,'Location');h+=tH('Turret 2',data.turret2,'Location');h+=tH('Turret 3',data.turret3,'Location')}
-    if(type==='lathe'){h+=tH('Tooling',data.tooling,'Location')}
+    if(type==='lathe')h+=tH('Tooling',data.tooling,'Location');
     if(type==='mill'){h+=pH('1st Pallet - Collets',data.pallet1Collets);h+=pH('1st Pallet - Stops',data.pallet1Stops);h+=mTH('1st Pallet - Tooling',data.pallet1Tools);h+=pH('2nd Pallet - Collets',data.pallet2Collets);h+=pH('2nd Pallet - Stops',data.pallet2Stops);h+=mTH('2nd Pallet - Tooling',data.pallet2Tools);if(data.comments)h+=`<h3>Comments</h3><p>${S(data.comments).replace(/\n/g,'<br>')}</p>`}
     if(data.notes)h+=`<h3>Notes</h3><p>${S(data.notes).replace(/\n/g,'<br>')}</p>`;
-    h+=`<br><button onclick="window.print()">Print</button></body></html>`;
-    w.document.write(h);w.document.close();
+    h+=`<br><button onclick="window.print()">Print</button></body></html>`;w.document.write(h);w.document.close();
   };
 
   return(<div>
-    <div className="form-header">
-      <button className="back-btn" onClick={handleBack}>&larr; Back to list</button>
-      <div style={{display:'flex',alignItems:'center',gap:8}}>
-        {readOnly&&<span style={{fontSize:11,color:'var(--amber)',fontWeight:500}}>READ ONLY</span>}
-        <span style={{fontSize:12,color:'var(--text3)'}}>{data.machine}</span></div></div>
+    <div className="form-header"><button className="back-btn" onClick={handleBack}>&larr; Back to list</button>
+      <div style={{display:'flex',alignItems:'center',gap:8}}>{readOnly&&<span style={{fontSize:11,color:'var(--amber)',fontWeight:500}}>READ ONLY</span>}<span style={{fontSize:12,color:'var(--text3)'}}>{data.machine}</span></div></div>
 
     {hasChanged&&!readOnly&&<div className="unsaved-bar"><span>Unsaved changes</span><button className="btn-green btn-sm" onClick={handleSave} disabled={saving}>{saving?'Saving...':'Save now'}</button></div>}
 
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Part photo</div>
-      <ImageUpload image={data.image} onChange={v=>set('image',v)} disabled={readOnly} label="Tap to add part photo"/></div>
+      <ImageUpload image={data.image} onChange={v=>set('image',v)} disabled={readOnly} label="Tap to add part photo" onBeforeCapture={handleBeforeCapture}/></div>
 
-    {/* ── MTC Part Info ── */}
     {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Part info</div>
-      <div className="field-grid cols-4">
-        <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
+      <div className="field-grid cols-4"><div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div>
         <div className="field"><label>Program #</label><CapsInput value={data.programNumber} onChange={v=>set('programNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>PPH</label><CapsInput value={data.pph} onChange={v=>set('pph',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* ── TMY Part Info ── */}
     {type==='tmy'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Part info</div>
-      <div className="field-grid cols-2">
-        <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
+      <div className="field-grid cols-2"><div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* ── Lathe Part Info ── */}
     {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Part info</div>
-      <div className="field-grid cols-4">
-        <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
+      <div className="field-grid cols-4"><div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly}/></div>
         <div className="field"><label>Cycle time</label><CapsInput value={data.cycleTime} onChange={v=>set('cycleTime',v)} disabled={readOnly}/></div>
         <div className="field"><label>Machining OP</label><CapsInput value={data.machiningOp} onChange={v=>set('machiningOp',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* ── Mill Part Info ── */}
     {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--teal)'}}/> Part info</div>
-      <div className="field-grid cols-3">
-        <div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
+      <div className="field-grid cols-3"><div className="field"><label>Part number *</label><CapsInput value={data.partNumber} onChange={v=>set('partNumber',v)} disabled={readOnly}/></div>
         <div className="field"><label>OP</label><CapsInput value={data.op} onChange={v=>set('op',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Main P#</label><CapsInput value={data.mainPartNumber} onChange={v=>set('mainPartNumber',v)} disabled={readOnly}/></div>
-      </div>
+        <div className="field"><label>Main P#</label><CapsInput value={data.mainPartNumber} onChange={v=>set('mainPartNumber',v)} disabled={readOnly}/></div></div>
       <div className="field" style={{marginTop:10}}><label>Rev</label><CapsInput value={data.rev} onChange={v=>set('rev',v)} disabled={readOnly} style={{maxWidth:120}}/></div></div>}
 
-    {/* ── Mill Op Types ── */}
-    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--teal)'}}/> Operation types</div>
-      <OpChips selected={data.opTypes} onChange={v=>set('opTypes',v)} disabled={readOnly}/></div>}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--teal)'}}/> Operation types</div><OpChips selected={data.opTypes} onChange={v=>set('opTypes',v)} disabled={readOnly}/></div>}
 
-    {/* ── MTC Collet & Spindle ── */}
     {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; spindle</div>
-      <div className="field-grid cols-2" style={{marginBottom:10}}>
-        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={data.colletLocation} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
+      <div className="field-grid cols-2" style={{marginBottom:10}}><div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={data.colletLocation} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
         <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Left collet</div>
           <ColletField typeValue={data.leftColletType} sizeValue={data.leftColletSize} onTypeChange={v=>set('leftColletType',v)} onSizeChange={v=>set('leftColletSize',v)} disabled={readOnly}/>
@@ -655,66 +681,38 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
           <ColletField typeValue={data.rightColletType} sizeValue={data.rightColletSize} onTypeChange={v=>set('rightColletType',v)} onSizeChange={v=>set('rightColletSize',v)} disabled={readOnly}/>
           <div className="field" style={{marginTop:8}}><label>Spindle slot</label><CapsInput value={data.rightSpindleSlot} onChange={v=>set('rightSpindleSlot',v)} disabled={readOnly}/></div></div></div></div>}
 
-    {/* ── TMY Collets ── */}
     {type==='tmy'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collets</div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-        <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>1st collet</div>
-          <ColletField typeValue={data.collet1Type} sizeValue={data.collet1} onTypeChange={v=>set('collet1Type',v)} onSizeChange={v=>set('collet1',v)} disabled={readOnly}/></div>
-        <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>2nd collet</div>
-          <ColletField typeValue={data.collet2Type} sizeValue={data.collet2} onTypeChange={v=>set('collet2Type',v)} onSizeChange={v=>set('collet2',v)} disabled={readOnly}/></div></div></div>}
+        <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>1st collet</div><ColletField typeValue={data.collet1Type} sizeValue={data.collet1} onTypeChange={v=>set('collet1Type',v)} onSizeChange={v=>set('collet1',v)} disabled={readOnly}/></div>
+        <div><div style={{fontSize:11,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>2nd collet</div><ColletField typeValue={data.collet2Type} sizeValue={data.collet2} onTypeChange={v=>set('collet2Type',v)} onSizeChange={v=>set('collet2',v)} disabled={readOnly}/></div></div></div>}
 
-    {/* ── Lathe Collet & Stop ── */}
     {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet &amp; stop</div>
       <ColletField typeValue={data.colletStyleType} sizeValue={data.colletSize} onTypeChange={v=>set('colletStyleType',v)} onSizeChange={v=>set('colletSize',v)} typeLabel="Collet style" sizeLabel="Collet size" disabled={readOnly}/>
-      <div className="field-grid cols-3" style={{marginTop:10}}>
-        <div className="field"><label>Collet type</label><CapsInput value={data.colletType} onChange={v=>set('colletType',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={S(data.colletLocation)} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
-      <div className="field-grid cols-3" style={{marginTop:10}}>
-        <div className="field"><label>Stop type</label><CapsInput value={data.stopType} onChange={v=>set('stopType',v)} disabled={readOnly}/></div>
-        <div className="field"><label>Stop location</label><CapsInput value={data.stopLocation} onChange={v=>set('stopLocation',v)} disabled={readOnly}/></div><div/></div></div>}
+      <div className="field-grid cols-3" style={{marginTop:10}}><div className="field"><label>Collet type</label><CapsInput value={data.colletType} onChange={v=>set('colletType',v)} disabled={readOnly}/></div><div className="field"><label>Collet location</label><AutoInput field="colletLocation" value={S(data.colletLocation)} onChange={v=>set('colletLocation',v)} disabled={readOnly}/></div><div/></div>
+      <div className="field-grid cols-3" style={{marginTop:10}}><div className="field"><label>Stop type</label><CapsInput value={data.stopType} onChange={v=>set('stopType',v)} disabled={readOnly}/></div><div className="field"><label>Stop location</label><CapsInput value={data.stopLocation} onChange={v=>set('stopLocation',v)} disabled={readOnly}/></div><div/></div></div>}
 
-    {/* ── Mill Pallets ── */}
     {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> 1st Pallet</div>
-      <div className="pallet-grid">
-        <div><PalletTable rows={data.pallet1Collets} onChange={v=>set('pallet1Collets',v)} disabled={readOnly} label="Collets"/></div>
-        <div><PalletTable rows={data.pallet1Stops} onChange={v=>set('pallet1Stops',v)} disabled={readOnly} label="Stops"/></div>
-      </div></div>}
-
+      <div className="pallet-grid"><div><PalletTable rows={data.pallet1Collets} onChange={v=>set('pallet1Collets',v)} disabled={readOnly} label="Collets"/></div>
+        <div><PalletTable rows={data.pallet1Stops} onChange={v=>set('pallet1Stops',v)} disabled={readOnly} label="Stops"/></div></div></div>}
     {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--amber)'}}/> 2nd Pallet</div>
-      <div className="pallet-grid">
-        <div><PalletTable rows={data.pallet2Collets} onChange={v=>set('pallet2Collets',v)} disabled={readOnly} label="Collets"/></div>
-        <div><PalletTable rows={data.pallet2Stops} onChange={v=>set('pallet2Stops',v)} disabled={readOnly} label="Stops"/></div>
-      </div></div>}
-
-    {/* ── Mill Tooling ── */}
-    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 1st Pallet tooling</div>
-      <MillToolTable rows={data.pallet1Tools} onChange={v=>set('pallet1Tools',v)} disabled={readOnly}/></div>}
-    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 2nd Pallet tooling</div>
-      <MillToolTable rows={data.pallet2Tools} onChange={v=>set('pallet2Tools',v)} disabled={readOnly}/></div>}
-
-    {/* ── Mill Comments ── */}
+      <div className="pallet-grid"><div><PalletTable rows={data.pallet2Collets} onChange={v=>set('pallet2Collets',v)} disabled={readOnly} label="Collets"/></div>
+        <div><PalletTable rows={data.pallet2Stops} onChange={v=>set('pallet2Stops',v)} disabled={readOnly} label="Stops"/></div></div></div>}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 1st Pallet tooling</div><MillToolTable rows={data.pallet1Tools} onChange={v=>set('pallet1Tools',v)} disabled={readOnly}/></div>}
+    {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> 2nd Pallet tooling</div><MillToolTable rows={data.pallet2Tools} onChange={v=>set('pallet2Tools',v)} disabled={readOnly}/></div>}
     {type==='mill'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Comments</div>
-      <textarea value={S(data.comments)} onChange={e=>{setData(d=>{const nd={...d,comments:e.target.value};setSaved(JSON.stringify(nd)===initialJson);return nd})}} placeholder="Comments specific to this mill setup..." rows={4} disabled={readOnly}/></div>}
+      <textarea value={S(data.comments)} onChange={e=>{setData(d=>{const nd={...d,comments:e.target.value};setSaved(JSON.stringify(nd)===initialJson);saveDraft(nd);return nd})}} placeholder="Comments specific to this mill setup..." rows={4} disabled={readOnly}/></div>}
 
-    {/* ── MTC Loader ── */}
     {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Loader</div><LoaderTable rows={data.loader} onChange={v=>set('loader',v)} disabled={readOnly}/></div>}
-
-    {/* ── MTC Cutting ── */}
     {type==='mtc'&&<><div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Left side cutting</div><ToolingTable rows={data.leftCutting} onChange={v=>set('leftCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div>
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Right side cutting</div><ToolingTable rows={data.rightCutting} onChange={v=>set('rightCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div></>}
-
-    {/* ── TMY Turrets ── */}
     {type==='tmy'&&<>{[1,2,3].map(n=><div className="section" key={n}><div className="section-title"><span className="section-dot" style={{background:['var(--accent)','var(--amber)','var(--coral)'][n-1]}}/> Turret {n}</div><ToolingTable rows={data[`turret${n}`]} onChange={v=>set(`turret${n}`,v)} lastColLabel="Location" disabled={readOnly}/></div>)}</>}
-
-    {/* ── Lathe Tooling ── */}
     {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Tooling</div><ToolingTable rows={data.tooling} onChange={v=>set('tooling',v)} lastColLabel="Location" disabled={readOnly}/></div>}
 
-    {/* ── Notes ── */}
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--text3)'}}/> Setup notes</div>
-      <textarea value={S(data.notes)} onChange={e=>{setData(d=>{const nd={...d,notes:e.target.value};setSaved(JSON.stringify(nd)===initialJson);return nd})}} placeholder="Free-form setup instructions, tips, warnings..." rows={4} disabled={readOnly}/></div>
+      <textarea value={S(data.notes)} onChange={e=>{setData(d=>{const nd={...d,notes:e.target.value};setSaved(JSON.stringify(nd)===initialJson);saveDraft(nd);return nd})}} placeholder="Free-form setup instructions, tips, warnings..." rows={4} disabled={readOnly}/></div>
 
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Setup photo</div>
-      <ImageUpload image={data.setupPhoto} onChange={v=>set('setupPhoto',v)} disabled={readOnly} label="Tap to photograph machine setup"/></div>
+      <ImageUpload image={data.setupPhoto} onChange={v=>set('setupPhoto',v)} disabled={readOnly} label="Tap to photograph machine setup" onBeforeCapture={handleBeforeCapture}/></div>
 
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--amber)'}}/> Attachments</div>
       <FileAttachments files={data.files||[]} onFilesChange={v=>set('files',v)} disabled={readOnly}/></div>
@@ -727,17 +725,15 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
       {!readOnly&&<button className="btn-green" onClick={handleSave} disabled={!hasChanged||saving}>{saving?'Saving...':'Save setup sheet'}</button>}
       <button onClick={handlePrint}>Print for machine</button>
       {canCreate(userRole)&&<button onClick={handleDuplicate}>Duplicate</button>}
-      {canModify(userRole)&&<button className="btn-danger" onClick={()=>{if(confirm('Delete this setup sheet permanently?'))onDelete(data.id)}}>Delete</button>}
+      {canModify(userRole)&&<button className="btn-danger" onClick={()=>{clearDraft();if(confirm('Delete permanently?'))onDelete(data.id)}}>Delete</button>}
     </div>
 
-    {showAudit&&<div className="modal-overlay" onClick={()=>setShowAudit(false)}>
-      <div className="modal-panel" onClick={e=>e.stopPropagation()}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-          <span style={{fontWeight:600}}>Edit history</span>
-          <button style={{background:'none',border:'none',color:'var(--text3)',fontSize:18,cursor:'pointer'}} onClick={()=>setShowAudit(false)}>&times;</button></div>
-        {audit.length===0&&<div style={{color:'var(--text3)',fontSize:13}}>No history yet.</div>}
-        {audit.map((a,i)=><div className="audit-entry" key={i}><span className="who">{a.who}</span> <span className="when">{new Date(a.when).toLocaleString()}</span><div className="what">{a.action}</div></div>)}
-      </div></div>}
+    {showAudit&&<div className="modal-overlay" onClick={()=>setShowAudit(false)}><div className="modal-panel" onClick={e=>e.stopPropagation()}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}><span style={{fontWeight:600}}>Edit history</span>
+        <button style={{background:'none',border:'none',color:'var(--text3)',fontSize:18,cursor:'pointer'}} onClick={()=>setShowAudit(false)}>&times;</button></div>
+      {audit.length===0&&<div style={{color:'var(--text3)',fontSize:13}}>No history yet.</div>}
+      {audit.map((a,i)=><div className="audit-entry" key={i}><span className="who">{a.who}</span> <span className="when">{new Date(a.when).toLocaleString()}</span><div className="what">{a.action}</div></div>)}
+    </div></div>}
     {toast&&<div className={`toast toast-${toast.type}`}>{toast.msg}</div>}
   </div>);
 }
@@ -748,92 +744,81 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
 function SettingsView({onBack,userRole}){
   const[custom,setCustom]=useState(JSON.parse(localStorage.getItem('jcm_custom_machines')||'[]'));
   const[newName,setNewName]=useState('');const[newType,setNewType]=useState('lathe');
-  const[roles,setRolesState]=useState(loadRoles());
-  const[newEmail,setNewEmail]=useState('');const[newRole,setNewRole]=useState(ROLES.MODIFY);
+  const[roles,setRolesState]=useState(loadRoles());const[newEmail,setNewEmail]=useState('');const[newRole,setNewRole]=useState(ROLES.MODIFY);
   const[colletTypes,setCT]=useState(getColletTypes());const[newCT,setNewCT]=useState('');
-
   const addMachine=()=>{if(!newName.trim())return;const u=[...custom,{name:newName.trim().toUpperCase(),type:newType,color:MACHINE_TEMPLATES[newType]?.color||'lathe'}];setCustom(u);localStorage.setItem('jcm_custom_machines',JSON.stringify(u));setNewName('')};
-  const removeMachine=(i)=>{const u=custom.filter((_,j)=>j!==i);setCustom(u);localStorage.setItem('jcm_custom_machines',JSON.stringify(u))};
+  const removeMachine=i=>{const u=custom.filter((_,j)=>j!==i);setCustom(u);localStorage.setItem('jcm_custom_machines',JSON.stringify(u))};
   const addRole=()=>{if(!newEmail.trim())return;const u={...roles,[newEmail.trim().toLowerCase()]:newRole};setRolesState(u);saveRoles(u);setNewEmail('')};
-  const removeRole=(email)=>{const u={...roles};delete u[email];setRolesState(u);saveRoles(u)};
+  const removeRole=email=>{const u={...roles};delete u[email];setRolesState(u);saveRoles(u)};
   const handleAddCT=()=>{if(!newCT.trim())return;addColletType(newCT.trim().toUpperCase());setCT(getColletTypes());setNewCT('')};
-
   return(<div>
     <div className="form-header"><button className="back-btn" onClick={onBack}>&larr; Back</button><span style={{fontSize:14,fontWeight:500}}>Settings</span></div>
     <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--accent)'}}/> Machines</div>
       {Object.entries(MACHINE_TEMPLATES).map(([type,tmpl])=>tmpl.machines.map(m=><div className="machine-list-item" key={m}><div><span className="name">{m}</span> <span className="type">&mdash; {tmpl.label}</span></div></div>))}
       {custom.map((m,i)=><div className="machine-list-item" key={'c'+i}><div><span className="name">{m.name}</span> <span className="type">&mdash; {m.type}</span></div><button className="btn-danger btn-sm" onClick={()=>removeMachine(i)}>Remove</button></div>)}
-      {isAdmin(userRole)&&<div style={{display:'flex',gap:8,marginTop:12}}>
-        <input className="caps" value={newName} onChange={e=>setNewName(e.target.value.toUpperCase())} placeholder="Machine name" style={{flex:1}}/>
-        <select value={newType} onChange={e=>setNewType(e.target.value)} style={{width:140}}>
-          <option value="mtc">MTC</option><option value="tmy">TMY</option><option value="lathe">Lathe</option><option value="mill">Mill</option>
-        </select><button className="btn-accent" onClick={addMachine}>Add</button></div>}
-    </div>
+      {isAdmin(userRole)&&<div style={{display:'flex',gap:8,marginTop:12}}><input className="caps" value={newName} onChange={e=>setNewName(e.target.value.toUpperCase())} placeholder="Machine name" style={{flex:1}}/>
+        <select value={newType} onChange={e=>setNewType(e.target.value)} style={{width:140}}><option value="mtc">MTC</option><option value="tmy">TMY</option><option value="lathe">Lathe</option><option value="mill">Mill</option></select>
+        <button className="btn-accent" onClick={addMachine}>Add</button></div>}</div>
     {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}><div className="section-title"><span className="section-dot" style={{background:'var(--green)'}}/> Collet types</div>
       <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:12}}>{colletTypes.map(t=><span key={t} style={{background:'var(--bg4)',padding:'4px 12px',borderRadius:6,fontSize:13}}>{t}</span>)}</div>
       <div style={{display:'flex',gap:8}}><input className="caps" value={newCT} onChange={e=>setNewCT(e.target.value.toUpperCase())} placeholder="New collet type" style={{flex:1}}/><button className="btn-accent" onClick={handleAddCT}>Add</button></div></div>}
     {isAdmin(userRole)&&<div className="section" style={{marginTop:12}}><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> User roles</div>
-      <div style={{fontSize:12,color:'var(--text3)',marginBottom:12}}>Admin = full access. Modify = edit existing. Create = add new only. Read = view/search/print. Use * as email for default role.</div>
+      <div style={{fontSize:12,color:'var(--text3)',marginBottom:12}}>Admin = full. Modify = edit. Create = new only. Read = view/print. Use * for default.</div>
       {Object.entries(roles).map(([email,role])=><div className="machine-list-item" key={email}><div><span className="name">{email}</span> <span className={`role-badge ${ROLE_CLASSES[role]}`}>{ROLE_LABELS[role]}</span></div><button className="btn-danger btn-sm" onClick={()=>removeRole(email)}>Remove</button></div>)}
-      <div style={{display:'flex',gap:8,marginTop:12}}>
-        <input value={newEmail} onChange={e=>setNewEmail(e.target.value)} placeholder="Email or * for default" style={{flex:1}}/>
-        <select value={newRole} onChange={e=>setNewRole(e.target.value)} style={{width:140}}>
-          <option value={ROLES.ADMIN}>Admin</option><option value={ROLES.MODIFY}>Modify</option><option value={ROLES.CREATE}>Create</option><option value={ROLES.READ}>Read Only</option>
-        </select><button className="btn-accent" onClick={addRole}>Add</button></div></div>}
+      <div style={{display:'flex',gap:8,marginTop:12}}><input value={newEmail} onChange={e=>setNewEmail(e.target.value)} placeholder="Email or *" style={{flex:1}}/>
+        <select value={newRole} onChange={e=>setNewRole(e.target.value)} style={{width:140}}><option value={ROLES.ADMIN}>Admin</option><option value={ROLES.MODIFY}>Modify</option><option value={ROLES.CREATE}>Create</option><option value={ROLES.READ}>Read Only</option></select>
+        <button className="btn-accent" onClick={addRole}>Add</button></div></div>}
   </div>);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// MACHINE PICKER
-// ═══════════════════════════════════════════════════════════════════════
 function MachinePicker({onSelect,onCancel}){
   const machines=getAllMachines();const grouped={};machines.forEach(m=>{if(!grouped[m.type])grouped[m.type]=[];grouped[m.type].push(m)});
-  return(<div>
-    <div className="form-header"><button className="back-btn" onClick={onCancel}>&larr; Cancel</button><span style={{fontSize:14,fontWeight:500}}>Select machine</span></div>
+  return(<div><div className="form-header"><button className="back-btn" onClick={onCancel}>&larr; Cancel</button><span style={{fontSize:14,fontWeight:500}}>Select machine</span></div>
     {Object.entries(grouped).map(([type,ms])=><div key={type} style={{marginBottom:16}}>
       <div style={{fontSize:12,fontWeight:500,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:8}}>{MACHINE_TEMPLATES[type]?.label||type}</div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(120px,1fr))',gap:8}}>
         {ms.map(m=><div key={m.name} className="part-card" style={{textAlign:'center',padding:16,display:'block'}} onClick={()=>onSelect(m.name)}>
-          <div className={`machine-pill ${m.color}`}>{m.name}</div></div>)}</div></div>)}
-  </div>);
+          <div className={`machine-pill ${m.color}`}>{m.name}</div></div>)}</div></div>)}</div>);
 }
 
 // ═══════════════════════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════════════════════
 function App(){
-  const[view,setView]=useState('loading');
-  const[data,setData]=useState([]);
-  const[editId,setEditId]=useState(null);
-  const[search,setSearch]=useState('');
-  const[machineFilter,setMachineFilter]=useState('all');
-  const[colletSearch,setColletSearch]=useState('');
-  const[colletTypeFilter,setColletTypeFilter]=useState('');
-  const[tolPlus,setTolPlus]=useState('0.005');
-  const[tolMinus,setTolMinus]=useState('0.005');
-  const[tab,setTab]=useState('all');
-  const[userName,setUserName]=useState('Local User');
-  const[userEmail,setUserEmail]=useState('');
-  const[userRole,setUserRole]=useState(ROLES.ADMIN);
-  const[notesPN,setNotesPN]=useState('');
-  const[syncStatus,setSyncStatus]=useState('');
+  const[view,setView]=useState('loading');const[data,setData]=useState([]);const[editId,setEditId]=useState(null);
+  const[search,setSearch]=useState('');const[machineFilter,setMachineFilter]=useState('all');
+  const[colletSearch,setColletSearch]=useState('');const[colletTypeFilter,setColletTypeFilter]=useState('');
+  const[tolPlus,setTolPlus]=useState('0.005');const[tolMinus,setTolMinus]=useState('0.005');
+  const[tab,setTab]=useState('all');const[userName,setUserName]=useState('Local User');const[userEmail,setUserEmail]=useState('');
+  const[userRole,setUserRole]=useState(ROLES.ADMIN);const[notesPN,setNotesPN]=useState('');const[syncStatus,setSyncStatus]=useState('');
 
   useEffect(()=>{
     initAC();
     (async()=>{
       if(msalInstance){
         try{
-          await msalInstance.initialize();
-          await msalInstance.handleRedirectPromise();
+          await msalInstance.initialize();await msalInstance.handleRedirectPromise();
           let account=msalInstance.getAllAccounts()[0];
-          if(!account){try{await msalInstance.loginRedirect({scopes:GRAPH_SCOPES});return}catch(e){console.warn('Login failed:',e)}}
+          if(!account){try{await msalInstance.loginRedirect({scopes:GRAPH_SCOPES});return}catch{}}
           if(account){
-            setUserName(account.name||account.username);
-            setUserEmail((account.username||'').toLowerCase());
-            setUserRole(getUserRole((account.username||'').toLowerCase()));
-            _useGraph=true;
-            try{const tr=await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account});console.log('Token scopes:',tr.scopes);console.log('Token expires:',tr.expiresOn)}catch(e){console.warn('Token acquire failed:',e);_useGraph=false}
-            if(_useGraph){const sheets=await loadSheetsFromGraph();if(sheets!==null){console.log('Loaded',sheets.length,'sheets from SharePoint');setSyncStatus('cloud');setData(sheets);setView('list');return}else{console.warn('Graph load null, fallback local');setSyncStatus('local')}}
+            setUserName(account.name||account.username);setUserEmail((account.username||'').toLowerCase());
+            setUserRole(getUserRole((account.username||'').toLowerCase()));_useGraph=true;
+            try{await msalInstance.acquireTokenSilent({scopes:GRAPH_SCOPES,account})}catch{_useGraph=false}
+            if(_useGraph){
+              await ensureColumns();
+              const sheets=await loadSheetsFromGraph();
+              if(sheets!==null){console.log('Loaded',sheets.length,'sheets');setSyncStatus('cloud');setData(sheets);setView('list');
+                // Check for draft recovery
+                const draft=loadDraft();
+                if(draft&&draft.id){
+                  const exists=sheets.find(s=>s.id===draft.id);
+                  if(exists){setEditId(draft.id);setView('form')}
+                }
+                // Backfill in background
+                backfillSheets(sheets);
+                return;
+              }else setSyncStatus('local');
+            }
           }
         }catch(e){console.warn('MSAL error:',e)}
       }
@@ -849,21 +834,17 @@ function App(){
       const target=parseFloat(colletSearch);
       if(!isNaN(target)){
         const tp=parseFloat(tolPlus)||0,tm=parseFloat(tolMinus)||0;
-        result=result.map(s=>{
-          const pairs=[];
+        result=result.map(s=>{const pairs=[];
           if(s.leftColletSize)pairs.push({v:parseFloat(s.leftColletSize),t:S(s.leftColletType)});
           if(s.rightColletSize)pairs.push({v:parseFloat(s.rightColletSize),t:S(s.rightColletType)});
           if(s.colletSize)pairs.push({v:parseFloat(s.colletSize),t:S(s.colletStyleType)});
           if(s.collet1)pairs.push({v:parseFloat(s.collet1),t:S(s.collet1Type)});
           if(s.collet2)pairs.push({v:parseFloat(s.collet2),t:S(s.collet2Type)});
-          const fp=colletTypeFilter?pairs.filter(p=>p.t===colletTypeFilter):pairs;
-          const valid=fp.filter(p=>!isNaN(p.v));
-          const exact=valid.some(p=>Math.abs(p.v-target)<0.0001);
-          const close=!exact&&valid.some(p=>p.v>=target-tm&&p.v<=target+tp);
+          const fp=colletTypeFilter?pairs.filter(p=>p.t===colletTypeFilter):pairs;const valid=fp.filter(p=>!isNaN(p.v));
+          const exact=valid.some(p=>Math.abs(p.v-target)<0.0001);const close=!exact&&valid.some(p=>p.v>=target-tm&&p.v<=target+tp);
           return{...s,_matchType:exact?'exact':close?'close':'none'};
         }).filter(s=>s._matchType!=='none').sort((a,b)=>a._matchType==='exact'?-1:1);
-        if(machineFilter!=='all')result=result.filter(s=>s.machine===machineFilter);
-        return result;
+        if(machineFilter!=='all')result=result.filter(s=>s.machine===machineFilter);return result;
       }
     }
     if(search){const q=search.toUpperCase();result=result.filter(s=>S(s.partNumber).toUpperCase().includes(q)||S(s.programNumber).toUpperCase().includes(q)||S(s.machine).toUpperCase().includes(q)||S(s.colletLocation).toUpperCase().includes(q)||S(s.notes).toUpperCase().includes(q)||S(s.mainPartNumber).toUpperCase().includes(q)||S(s.op).toUpperCase().includes(q)||S(s.comments).toUpperCase().includes(q))}
@@ -874,20 +855,12 @@ function App(){
   },[data,search,machineFilter,tab,colletSearch,colletTypeFilter,tolPlus,tolMinus]);
 
   const handleSave=async(sheet,isDuplicate)=>{
-    let updated;
-    if(isDuplicate||!data.find(s=>s.id===sheet.id))updated=[...data,sheet];
-    else updated=data.map(s=>s.id===sheet.id?sheet:s);
-    setData(updated);
-    if(_useGraph){const ok=await saveSheetToGraph(sheet);if(!ok){saveLocal(updated);setSyncStatus('error');return false}setSyncStatus('cloud')}else{saveLocal(updated)}
-    return true;
+    let updated;if(isDuplicate||!data.find(s=>s.id===sheet.id))updated=[...data,sheet];else updated=data.map(s=>s.id===sheet.id?sheet:s);
+    setData(updated);if(_useGraph){const ok=await saveSheetToGraph(sheet);if(!ok){saveLocal(updated);setSyncStatus('error');return false}setSyncStatus('cloud')}else saveLocal(updated);return true;
   };
-  const handleDelete=async(id,silent)=>{
-    const sheet=data.find(s=>s.id===id);const updated=data.filter(s=>s.id!==id);setData(updated);
-    if(_useGraph&&sheet?._itemId)await deleteSheetFromGraph(sheet);else saveLocal(updated);
-    setView('list');
-  };
-  const openSheet=(id)=>{setEditId(id);setView('form')};
-  const createSheet=(machine)=>{const sheet=emptySheet(machine);const updated=[...data,sheet];setData(updated);if(!_useGraph)saveLocal(updated);setEditId(sheet.id);setView('form')};
+  const handleDelete=async(id)=>{const sheet=data.find(s=>s.id===id);const updated=data.filter(s=>s.id!==id);setData(updated);if(_useGraph&&sheet?._itemId)await deleteSheetFromGraph(sheet);else saveLocal(updated);setView('list')};
+  const openSheet=id=>{setEditId(id);setView('form')};
+  const createSheet=machine=>{const sheet=emptySheet(machine);setData(d=>[...d,sheet]);if(!_useGraph)saveLocal([...data,sheet]);setEditId(sheet.id);setView('form')};
 
   if(view==='loading')return<div className="app"><div className="login-screen"><div className="login-card"><h1><span>Job Card</span> Manager</h1><p>Connecting...</p></div></div></div>;
   if(view==='settings')return<div className="app"><SettingsView onBack={()=>setView('list')} userRole={userRole}/></div>;
@@ -898,16 +871,13 @@ function App(){
   const colletTypes=getColletTypes();
 
   return(<div className="app">
-    <div className="app-header">
-      <div className="app-title"><span>Job Card</span> Manager</div>
+    <div className="app-header"><div className="app-title"><span>Job Card</span> Manager</div>
       <div className="app-header-right">
-        {syncStatus==='cloud'&&<span className="sync-status sync-ok" title="Synced to SharePoint">&#9729; Cloud</span>}
-        {syncStatus==='local'&&<span className="sync-status sync-local" title="Local only">&#128190; Local</span>}
-        {syncStatus==='error'&&<span className="sync-status sync-err" title="Save failed">&#9888; Sync error</span>}
-        <span className="user-badge">{userName}</span>
-        <span className={`role-badge ${ROLE_CLASSES[userRole]}`}>{ROLE_LABELS[userRole]}</span>
-        {isAdmin(userRole)&&<button style={{fontSize:12,padding:'6px 12px'}} onClick={()=>setView('settings')}>Settings</button>}
-      </div></div>
+        {syncStatus==='cloud'&&<span className="sync-status sync-ok">&#9729; Cloud</span>}
+        {syncStatus==='local'&&<span className="sync-status sync-local">&#128190; Local</span>}
+        {syncStatus==='error'&&<span className="sync-status sync-err">&#9888; Error</span>}
+        <span className="user-badge">{userName}</span><span className={`role-badge ${ROLE_CLASSES[userRole]}`}>{ROLE_LABELS[userRole]}</span>
+        {isAdmin(userRole)&&<button style={{fontSize:12,padding:'6px 12px'}} onClick={()=>setView('settings')}>Settings</button>}</div></div>
 
     <div className="tab-row">
       <button className={`tab-btn${tab==='all'?' active':''}`} onClick={()=>setTab('all')}>All parts</button>
@@ -925,43 +895,30 @@ function App(){
         <option value="all">All machines</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}</select></div>}
 
     {tab==='collet'&&<div className="collet-search-row">
-      <div className="field" style={{width:100}}><label>Type</label>
-        <select value={colletTypeFilter} onChange={e=>setColletTypeFilter(e.target.value)}>
-          <option value="">Any</option>{colletTypes.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
+      <div className="field" style={{width:100}}><label>Type</label><select value={colletTypeFilter} onChange={e=>setColletTypeFilter(e.target.value)}><option value="">Any</option>{colletTypes.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
       <div className="field" style={{width:120}}><label>Size</label><input value={colletSearch} onChange={e=>setColletSearch(e.target.value)} placeholder="e.g. 0.750"/></div>
       <div className="field" style={{width:80}}><label>- Tol</label><input value={tolMinus} onChange={e=>setTolMinus(e.target.value)}/></div>
       <div className="field" style={{width:80}}><label>+ Tol</label><input value={tolPlus} onChange={e=>setTolPlus(e.target.value)}/></div>
-      <div className="field" style={{width:140}}><label>Machine</label><select value={machineFilter} onChange={e=>setMachineFilter(e.target.value)}>
-        <option value="all">All</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}</select></div></div>}
+      <div className="field" style={{width:140}}><label>Machine</label><select value={machineFilter} onChange={e=>setMachineFilter(e.target.value)}><option value="all">All</option>{machines.map(m=><option key={m.name} value={m.name}>{m.name}</option>)}</select></div></div>}
 
     {tab!=='notes'&&<div className="card-list">
       {filtered.length===0&&data.length>0&&<div className="empty-state"><p>No matching setup sheets.</p></div>}
       {filtered.length===0&&data.length===0&&<div className="empty-state"><div style={{fontSize:28,marginBottom:8}}>&#9881;</div><p>No setup sheets yet.</p></div>}
       {filtered.map(s=>{
-        const ci=[];
-        if(s.leftColletSize)ci.push(`${S(s.leftColletType)} ${s.leftColletSize}`.trim());
-        if(s.rightColletSize)ci.push(`${S(s.rightColletType)} ${s.rightColletSize}`.trim());
-        if(s.colletSize)ci.push(`${S(s.colletStyleType)} ${s.colletSize}`.trim());
-        if(s.collet1)ci.push(`${S(s.collet1Type)} ${s.collet1}`.trim());
-        if(s.collet2)ci.push(`${S(s.collet2Type)} ${s.collet2}`.trim());
+        const ci=[];if(s.leftColletSize)ci.push(`${S(s.leftColletType)} ${s.leftColletSize}`.trim());if(s.rightColletSize)ci.push(`${S(s.rightColletType)} ${s.rightColletSize}`.trim());
+        if(s.colletSize)ci.push(`${S(s.colletStyleType)} ${s.colletSize}`.trim());if(s.collet1)ci.push(`${S(s.collet1Type)} ${s.collet1}`.trim());if(s.collet2)ci.push(`${S(s.collet2Type)} ${s.collet2}`.trim());
         return(<div className="part-card" key={s.id} onClick={()=>openSheet(s.id)}>
           {s.image&&<img className="part-card-thumb" src={s.image} alt=""/>}
           {!s.image&&<div className="part-card-thumb" style={{display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:'var(--text3)'}}>&#9881;</div>}
-          <div className="part-card-body">
-            <div className="top-row">
-              <span className="pn">{s.partNumber||'(NO PART #)'}</span>
-              <div style={{display:'flex',alignItems:'center',gap:6}}>
-                {s._matchType==='exact'&&<span className="match-badge match-exact">Exact</span>}
-                {s._matchType==='close'&&<span className="match-badge match-close">Close</span>}
-                {s.rev&&<span className="rev-badge">Rev {s.rev}</span>}</div></div>
-            <div className="meta">
-              <span className={`machine-pill ${getMachineColor(s.machine)}`}>{s.machine}</span>
-              {s.programNumber&&<span>Prog {s.programNumber}</span>}
-              {s.op&&<span>OP {s.op}</span>}
-              {ci.length>0&&<span>Collet {ci.join(' / ')}</span>}
-              {(s.opTypes||[]).length>0&&<span>{s.opTypes.join(', ')}</span>}
-              <span>{relTime(s.updatedAt)}</span></div></div>
-        </div>);
+          <div className="part-card-body"><div className="top-row"><span className="pn">{s.partNumber||'(NO PART #)'}</span>
+            <div style={{display:'flex',alignItems:'center',gap:6}}>
+              {s._matchType==='exact'&&<span className="match-badge match-exact">Exact</span>}
+              {s._matchType==='close'&&<span className="match-badge match-close">Close</span>}
+              {s.rev&&<span className="rev-badge">Rev {s.rev}</span>}</div></div>
+            <div className="meta"><span className={`machine-pill ${getMachineColor(s.machine)}`}>{s.machine}</span>
+              {s.programNumber&&<span>Prog {s.programNumber}</span>}{s.op&&<span>OP {s.op}</span>}
+              {ci.length>0&&<span>Collet {ci.join(' / ')}</span>}{(s.opTypes||[]).length>0&&<span>{s.opTypes.join(', ')}</span>}
+              <span>{relTime(s.updatedAt)}</span></div></div></div>);
       })}
       {canCreate(userRole)&&<div className="new-card" onClick={()=>setView('new')}>+ New setup sheet</div>}
     </div>}
