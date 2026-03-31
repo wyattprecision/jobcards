@@ -260,21 +260,18 @@ async function ensureListId(){
   console.error('SetupSheets list not found.');return null;
 }
 
+let _existingCols=new Set(['Title','jsonData']);
 async function ensureColumns(){
   if(_columnsReady)return;
   const lid=await ensureListId();if(!lid)return;
   const existing=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/columns`);
-  if(!existing?.value)return;
-  const existingNames=new Set(existing.value.map(c=>c.name));
-  let created=0;
-  for(const col of SP_COLUMNS){
-    if(!existingNames.has(col.name)){
-      console.log('Creating column:',col.name);
-      const r=await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/columns`,{method:'POST',body:JSON.stringify(col)});
-      if(r)created++;else console.warn('Failed to create column:',col.name);
-    }
-  }
-  if(created>0)console.log(`Created ${created} new columns`);
+  if(!existing?.value){_columnsReady=true;return}
+  _existingCols=new Set(existing.value.map(c=>c.name));
+  const missing=SP_COLUMNS.filter(c=>!_existingCols.has(c.name));
+  if(missing.length>0){
+    console.log(`SharePoint columns not yet created: ${missing.map(c=>c.name).join(', ')}`);
+    console.log('To add them, go to SharePoint > SetupSheets > List Settings > Create Column for each.');
+  }else{console.log('All SP columns present')}
   _columnsReady=true;
 }
 
@@ -302,9 +299,9 @@ function flattenStopInfo(s){
   return'';
 }
 
-// Build the flat fields object for SharePoint columns
+// Build the flat fields object — only include columns that exist in SharePoint
 function buildSPFields(sheet){
-  return{
+  const all={
     Title:S(sheet.partNumber)||sheet.id,
     jsonData:JSON.stringify(sheet),
     partNumber:S(sheet.partNumber),
@@ -338,6 +335,12 @@ function buildSPFields(sheet){
     cycleTime:S(sheet.cycleTime),
     machiningOp:S(sheet.machiningOp),
   };
+  // Filter to only include fields that exist as columns in SharePoint
+  const filtered={};
+  for(const[k,v]of Object.entries(all)){
+    if(_existingCols.has(k))filtered[k]=v;
+  }
+  return filtered;
 }
 
 async function loadSheetsFromGraph(){
@@ -369,14 +372,17 @@ async function saveSheetToGraph(sheet){
 async function backfillSheets(sheets){
   const needBackfill=sheets.filter(s=>s._needsBackfill&&s._itemId);
   if(needBackfill.length===0)return;
+  // Only backfill if we have extra columns beyond Title/jsonData
+  const extraCols=[...(_existingCols)].filter(c=>c!=='Title'&&c!=='jsonData');
+  if(extraCols.length===0){console.log('No extra columns to backfill');return}
   console.log(`Backfilling ${needBackfill.length} records...`);
   const lid=await ensureListId();if(!lid)return;
   for(const sheet of needBackfill){
     const fields=buildSPFields(sheet);
-    delete fields.jsonData;// don't re-write jsonData, just add the flat fields
-    delete fields.Title;
+    delete fields.jsonData;delete fields.Title;
+    if(Object.keys(fields).length===0)continue;
     try{await graphFetch(`/sites/${CONFIG.siteId}/lists/${lid}/items/${sheet._itemId}/fields`,{method:'PATCH',body:JSON.stringify(fields)});console.log('Backfilled:',S(sheet.partNumber))}
-    catch(e){console.warn('Backfill failed for:',sheet._itemId,e)}
+    catch(e){console.warn('Backfill failed:',sheet._itemId,e)}
   }
   console.log('Backfill complete');
 }
