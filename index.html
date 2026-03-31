@@ -219,7 +219,6 @@ async function graphFetch(url,opts={}){
 // ═══════════════════════════════════════════════════════════════════════
 let _listId=null,_driveId=null,_useGraph=false,_columnsReady=false;
 
-// Columns we want in SharePoint for direct viewing
 const SP_COLUMNS=[
   {name:'partNumber',displayName:'Part Number',text:{}},
   {name:'rev',displayName:'Rev',text:{}},
@@ -279,7 +278,6 @@ async function ensureDriveId(){if(_driveId)return _driveId;const r=await graphFe
 
 function stripHtml(str){if(!str||typeof str!=='string')return str;if(!str.includes('<'))return str;try{return new DOMParser().parseFromString(str,'text/html').body.textContent||''}catch{return str}}
 
-// Flatten tooling rows for SharePoint viewing
 function flattenToolRows(rows){return(rows||[]).filter(r=>S(r.radius)||S(r.insert)||S(r.grade)||S(r.toolHolder)||S(r.lastCol)).map((r,i)=>`${i+1}: ${S(r.radius)} | ${S(r.insert)} | ${S(r.grade)} | ${S(r.toolHolder)} | ${S(r.lastCol)}`).join('\n')}
 function flattenPalletRows(rows){return(rows||[]).filter(r=>S(r.lista)||S(r.drw)||S(r.loc)).map((r,i)=>`${i+1}: Lista ${S(r.lista)} | Drw ${S(r.drw)} | Loc ${S(r.loc)}`).join('\n')}
 function flattenMillTools(rows){return(rows||[]).filter(r=>S(r.sub)||S(r.tool)).map((r,i)=>`${i+1}: Sub ${S(r.sub)} | ${S(r.tool)}`).join('\n')}
@@ -299,7 +297,6 @@ function flattenStopInfo(s){
   return'';
 }
 
-// Build the flat fields object — only include columns that exist in SharePoint
 function buildSPFields(sheet){
   const all={
     Title:S(sheet.partNumber)||sheet.id,
@@ -335,7 +332,6 @@ function buildSPFields(sheet){
     cycleTime:S(sheet.cycleTime),
     machiningOp:S(sheet.machiningOp),
   };
-  // Filter to only include fields that exist as columns in SharePoint
   const filtered={};
   for(const[k,v]of Object.entries(all)){
     if(_existingCols.has(k))filtered[k]=v;
@@ -372,7 +368,6 @@ async function saveSheetToGraph(sheet){
 async function backfillSheets(sheets){
   const needBackfill=sheets.filter(s=>s._needsBackfill&&s._itemId);
   if(needBackfill.length===0)return;
-  // Only backfill if we have extra columns beyond Title/jsonData
   const extraCols=[...(_existingCols)].filter(c=>c!=='Title'&&c!=='jsonData');
   if(extraCols.length===0){console.log('No extra columns to backfill');return}
   console.log(`Backfilling ${needBackfill.length} records...`);
@@ -426,12 +421,13 @@ function clearDraft(){sessionStorage.removeItem(DRAFT_KEY)}
 // ═══════════════════════════════════════════════════════════════════════
 function CapsInput({value,onChange,disabled,...props}){return <input className="caps" value={S(value)} onChange={e=>onChange(e.target.value.toUpperCase())} disabled={disabled} {...props}/>}
 
+/* PATCH 1: Tab key now accepts highlighted autocomplete suggestion */
 function AutoInput({field,value,onChange,placeholder,disabled}){
   const[open,setOpen]=useState(false);const[hl,setHl]=useState(-1);const ac=loadAC();const sv=S(value).toUpperCase();
   const opts=(ac[field]||[]).filter(v=>v.includes(sv)&&v!==sv);const show=open&&opts.length>0&&sv.length>0;
   return(<div className="autocomplete-wrap">
     <input className="caps" value={S(value)} onChange={e=>{onChange(e.target.value.toUpperCase());setOpen(true);setHl(-1)}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),150)} disabled={disabled}
-      onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if(e.key==='Enter'&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}} placeholder={placeholder}/>
+      onKeyDown={e=>{if(!show)return;if(e.key==='ArrowDown'){e.preventDefault();setHl(h=>Math.min(h+1,opts.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setHl(h=>Math.max(h-1,0))}if((e.key==='Enter'||e.key==='Tab')&&hl>=0){e.preventDefault();onChange(opts[hl]);setOpen(false)}}} placeholder={placeholder}/>
     {show&&<div className="autocomplete-list">{opts.slice(0,10).map((o,i)=>(<div key={o} className={`autocomplete-item${i===hl?' highlighted':''}`} onMouseDown={()=>{onChange(o);setOpen(false)}}>{o}</div>))}</div>}
   </div>);
 }
@@ -482,14 +478,15 @@ function PalletTable({rows,onChange,disabled,label}){
 
 function OpChips({selected,onChange,disabled}){const sel=selected||[];const toggle=op=>{if(disabled)return;if(sel.includes(op))onChange(sel.filter(o=>o!==op));else onChange([...sel,op])};return(<div className="op-chips">{MILL_OP_TYPES.map(op=>(<div key={op} className={`op-chip${sel.includes(op)?' active':''}${disabled?' disabled':''}`} onClick={()=>toggle(op)}>{op}</div>))}</div>)}
 
+/* PATCH 3: All Loader cells now use AutoInput for autocomplete */
 function LoaderTable({rows,onChange,disabled}){
   const g=['A','B','E','F'];const sr=(rows||[]).length>=4?rows:[{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''},{fingerSize:'',stopNumber:'',stopDesc:''}];
   const upd=(i,f,v)=>{const n=[...sr];n[i]={...n[i],[f]:S(v)};onChange(n)};
   return(<table className="tool-table"><thead><tr><th style={{width:50}}>Gripper</th><th>Finger size</th><th>Stop number</th><th>Stop description</th></tr></thead><tbody>
     {sr.map((r,i)=><tr key={i}><td className="row-num" style={{fontWeight:500}}>{g[i]||i+1}</td>
       <td><AutoInput field="fingerSize" value={S(r.fingerSize)} onChange={v=>upd(i,'fingerSize',v)} disabled={disabled}/></td>
-      <td><CapsInput value={S(r.stopNumber)} onChange={v=>upd(i,'stopNumber',v)} disabled={disabled}/></td>
-      <td><CapsInput value={S(r.stopDesc)} onChange={v=>upd(i,'stopDesc',v)} disabled={disabled}/></td></tr>)}
+      <td><AutoInput field="stopNumber" value={S(r.stopNumber)} onChange={v=>upd(i,'stopNumber',v)} disabled={disabled}/></td>
+      <td><AutoInput field="stopDesc" value={S(r.stopDesc)} onChange={v=>upd(i,'stopDesc',v)} disabled={disabled}/></td></tr>)}
   </tbody></table>);
 }
 
@@ -611,7 +608,8 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
     const dup=checkDuplicate();if(dup){if(!confirm(`Sheet exists for ${data.partNumber} on ${data.machine} Rev ${data.rev||'--'}. Save anyway?`))return}
     const allTool=[...(data.leftCutting||[]),...(data.rightCutting||[]),...(data.turret1||[]),...(data.turret2||[]),...(data.turret3||[]),...(data.tooling||[])];
     allTool.forEach(r=>{addAC('radius',r.radius);addAC('insert',r.insert);addAC('grade',r.grade);addAC('toolHolder',r.toolHolder)});
-    (data.loader||[]).forEach(r=>addAC('fingerSize',r.fingerSize));addAC('colletLocation',data.colletLocation);
+    /* PATCH 4: Save loader stopNumber and stopDesc to autocomplete library */
+    (data.loader||[]).forEach(r=>{addAC('fingerSize',r.fingerSize);addAC('stopNumber',r.stopNumber);addAC('stopDesc',r.stopDesc)});addAC('colletLocation',data.colletLocation);
     const updated={...data,updatedAt:new Date().toISOString(),_updatedBy:userName};
     addAudit(data.id,'Saved setup sheet',userName);setSaving(true);
     const ok=await onSave(updated);setSaving(false);clearDraft();
@@ -709,8 +707,11 @@ function FormView({sheet,onSave,onBack,onDelete,userName,userRole,allData}){
       <textarea value={S(data.comments)} onChange={e=>{setData(d=>{const nd={...d,comments:e.target.value};setSaved(JSON.stringify(nd)===initialJson);saveDraft(nd);return nd})}} placeholder="Comments specific to this mill setup..." rows={4} disabled={readOnly}/></div>}
 
     {type==='mtc'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--coral)'}}/> Loader</div><LoaderTable rows={data.loader} onChange={v=>set('loader',v)} disabled={readOnly}/></div>}
+
+    {/* PATCH 2: Copy Left Side button added to Right Side Cutting header */}
     {type==='mtc'&&<><div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Left side cutting</div><ToolingTable rows={data.leftCutting} onChange={v=>set('leftCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div>
-    <div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Right side cutting</div><ToolingTable rows={data.rightCutting} onChange={v=>set('rightCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div></>}
+    <div className="section"><div className="section-title" style={{justifyContent:'space-between'}}><div style={{display:'flex',alignItems:'center',gap:10}}><span className="section-dot" style={{background:'var(--purple)'}}/> Right side cutting</div>{!readOnly&&<button className="btn-sm" style={{fontSize:11,padding:'4px 10px',color:'var(--text3)',textTransform:'none',letterSpacing:0,fontWeight:400}} onClick={()=>{set('rightCutting',(data.leftCutting||[]).map(r=>({...r})))}}>Copy left side</button>}</div><ToolingTable rows={data.rightCutting} onChange={v=>set('rightCutting',v)} lastColLabel="Tool number" disabled={readOnly}/></div></>}
+
     {type==='tmy'&&<>{[1,2,3].map(n=><div className="section" key={n}><div className="section-title"><span className="section-dot" style={{background:['var(--accent)','var(--amber)','var(--coral)'][n-1]}}/> Turret {n}</div><ToolingTable rows={data[`turret${n}`]} onChange={v=>set(`turret${n}`,v)} lastColLabel="Location" disabled={readOnly}/></div>)}</>}
     {type==='lathe'&&<div className="section"><div className="section-title"><span className="section-dot" style={{background:'var(--purple)'}}/> Tooling</div><ToolingTable rows={data.tooling} onChange={v=>set('tooling',v)} lastColLabel="Location" disabled={readOnly}/></div>}
 
@@ -814,13 +815,11 @@ function App(){
               await ensureColumns();
               const sheets=await loadSheetsFromGraph();
               if(sheets!==null){console.log('Loaded',sheets.length,'sheets');setSyncStatus('cloud');setData(sheets);setView('list');
-                // Check for draft recovery
                 const draft=loadDraft();
                 if(draft&&draft.id){
                   const exists=sheets.find(s=>s.id===draft.id);
                   if(exists){setEditId(draft.id);setView('form')}
                 }
-                // Backfill in background
                 backfillSheets(sheets);
                 return;
               }else setSyncStatus('local');
